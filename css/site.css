@@ -171,12 +171,25 @@ button { font: inherit; }
 
 /* Verse blocks */
 .verse-block {
+  position: relative;
   margin: 0.9rem 0 1.1rem;
   padding: 0.85rem 1.1rem;
   background: var(--bg-panel);
   border-left: 3px solid var(--accent);
   border-radius: 4px;
 }
+.verse-block[data-audio] { padding-right: 3.2rem; }
+
+.play-btn {
+  position: absolute; top: 0.6rem; right: 0.7rem;
+  width: 2.1rem; height: 2.1rem; border-radius: 50%;
+  border: none; background: var(--accent); color: #fff;
+  font-size: 0.85rem; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--shadow);
+}
+.play-btn:hover { filter: brightness(1.08); }
+.play-btn.playing { background: var(--link); }
 .verse {
   font-family: 'Tiro Telugu', 'Noto Serif Devanagari', serif;
   font-weight: bold; font-size: 1.08rem; line-height: 1.55;

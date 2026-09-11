@@ -14,6 +14,10 @@ Reads:
   ../ganapati-sambavam/images/*.png
   ../ganapati-sambavam/publishing/fonts_cache/*.ttf
   ../ganapati-sambavam/markdown/fonts_cache/*.ttf
+  Google Drive folder AUDIO_GDRIVE_FOLDER_ID (verse-recitation .wav files,
+  gs_<sarga>_<verse>.wav) — requires GOOGLE_API_KEY in the environment;
+  silently skipped without it, so a local run without the key still
+  works, just with no play buttons.
 
 Writes (into this site folder):
   data/meta.json            — book + sarga + topic metadata (both languages)
@@ -23,6 +27,7 @@ Writes (into this site folder):
   data/en/sarga-N.json      — English sarga N topics (N = 1..10)
   images/*.png, *.jpeg      — copied illustrations
   fonts/*.ttf               — copied fonts
+  audio/gs_*.wav            — synced verse-recitation audio (if available)
 
 Re-run any time the source markdown changes; this script does not
 modify anything in ../ganapati-sambavam.
@@ -45,6 +50,14 @@ IMG_SRC    = SRC_REPO / "images"
 DATA_DIR   = SITE_DIR / "data"
 IMG_DEST   = SITE_DIR / "images"
 FONTS_DEST = SITE_DIR / "fonts"
+AUDIO_DEST = SITE_DIR / "audio"
+
+# Verse-recitation audio (Vagdhenu-generated), shared by both languages
+# since it's a Sanskrit chant — independent of the Telugu/English gloss.
+# Files are named gs_<sarga>_<verse-number-within-sarga>.wav; the Drive
+# folder must be shared "Anyone with the link: Viewer", same as the
+# images folder ganapati-sambavam/publishing/make_pdf_book.py reads.
+AUDIO_GDRIVE_FOLDER_ID = "1fSkt3tUU7Pb6g3kmGl6gN2cxbAqm0bP5"
 
 # English theme summaries (mirrors publishing/make_pdf_book_english.py —
 # no separate English metadata file exists in the source repo yet).
@@ -101,6 +114,92 @@ def image_ref(sarga_dir, md_relpath):
     if src.exists():
         return f"images/{src.name}"
     return None
+
+
+# Matches a double-danda verse-end marker followed by the verse number:
+# ASCII "|| 12 ||" (Telugu source, English IAST lines) or the real
+# Devanagari double-danda character "॥ 12 ॥" (English Devanagari lines).
+VERSE_NUM_RE = re.compile(r'(?:॥|\|\|)\s*(\d+)')
+
+
+def extract_verse_number(raw_lines):
+    """Pull the shloka number out of a verse block's own raw text lines
+    (whichever pada carries the trailing "|| N ||"/"॥ N ॥" marker)."""
+    nums = []
+    for line in raw_lines:
+        nums.extend(VERSE_NUM_RE.findall(line))
+    return nums[-1] if nums else None
+
+
+def verse_block_html(sarga_num, raw_lines, inner_html, available_audio):
+    """Wrap a shloka's rendered pada HTML in its .verse-block div, adding
+    a play button + data-audio attribute when: this is a numbered main-sarga
+    verse (sarga_num given, i.e. not front matter), a verse number could be
+    extracted, and a matching gs_<sarga>_<verse>.wav actually exists — so a
+    verse with no recorded audio yet renders with no button at all."""
+    attr, button = '', ''
+    if sarga_num is not None:
+        vnum = extract_verse_number(raw_lines)
+        if vnum is not None:
+            fname = f'gs_{sarga_num}_{vnum}.wav'
+            if fname in available_audio:
+                attr = f' data-audio="audio/{fname}"'
+                button = ('<button type="button" class="play-btn" '
+                           'aria-label="Play recitation">▶</button>')
+    return f'<div class="verse-block"{attr}>{button}{inner_html}</div>'
+
+
+def sync_audio_from_gdrive(force=False):
+    """Download verse-recitation .wav files into audio/, incrementally —
+    unlike make_pdf_book.py's image sync (which skips entirely once any
+    local file exists), this always lists the Drive folder and fetches
+    only files not already present, so newly recorded verses get picked
+    up on the next build without wiping already-committed audio. Audio is
+    an optional enhancement: with no GOOGLE_API_KEY (e.g. a local run with
+    nothing exported) this just keeps whatever is already in audio/ and
+    every other verse renders with no play button, rather than failing
+    the build."""
+    import os
+    AUDIO_DEST.mkdir(parents=True, exist_ok=True)
+    api_key = os.environ.get("GOOGLE_API_KEY")
+    if not api_key:
+        existing = list(AUDIO_DEST.glob("*.wav"))
+        print(f"  GOOGLE_API_KEY not set — using {len(existing)} already-cached audio file(s), no sync")
+        return
+    try:
+        from googleapiclient.discovery import build
+        from googleapiclient.http import MediaIoBaseDownload
+    except ImportError:
+        print("  google-api-python-client not installed — skipping audio sync")
+        return
+    import io
+    service = build("drive", "v3", developerKey=api_key)
+    print(f"  Listing Drive folder {AUDIO_GDRIVE_FOLDER_ID}…", flush=True)
+    files, page_token = [], None
+    while True:
+        resp = service.files().list(
+            q=f"'{AUDIO_GDRIVE_FOLDER_ID}' in parents and trashed=false",
+            fields="nextPageToken, files(id, name)",
+            pageSize=1000,
+            pageToken=page_token,
+        ).execute()
+        files.extend(resp.get("files", []))
+        page_token = resp.get("nextPageToken")
+        if not page_token:
+            break
+    wavs = [f for f in files if f["name"].endswith(".wav")]
+    to_fetch = [f for f in wavs if force or not (AUDIO_DEST / f["name"]).exists()]
+    print(f"  Found {len(wavs)} audio file(s) in Drive, {len(to_fetch)} new", flush=True)
+    for f in to_fetch:
+        dest = AUDIO_DEST / f["name"]
+        req = service.files().get_media(fileId=f["id"])
+        buf = io.FileIO(dest, mode="wb")
+        dl = MediaIoBaseDownload(buf, req)
+        done = False
+        while not done:
+            _, done = dl.next_chunk()
+        print(f"    {f['name']}", flush=True)
+    print(f"  Downloaded {len(to_fetch)} new audio file(s).")
 
 
 # ══════════════════════════════════════════════════════════════════
@@ -233,7 +332,7 @@ def te_parse_sarga0_file(path):
     return sec_id, title, ''.join(buf), fallback_label
 
 
-def te_parse_topic(path, sarga_dir, topic_id):
+def te_parse_topic(path, sarga_dir, topic_id, sarga_num, available_audio):
     text = path.read_text(encoding='utf-8')
     text = text.replace('** **', '**\n**')
     text = BR_RE.sub('\n', text)
@@ -242,11 +341,14 @@ def te_parse_topic(path, sarga_dir, topic_id):
     buf, title = [], path.stem
     skipping, state, in_vb = False, 'header', False
     image_src = image_alt = None
+    verse_raw, verse_html = [], []
 
     def close_vb():
         nonlocal in_vb
         if in_vb:
-            buf.append('</div>')
+            buf.append(verse_block_html(sarga_num, verse_raw, ''.join(verse_html), available_audio))
+            verse_raw.clear()
+            verse_html.clear()
             in_vb = False
 
     for idx, line in enumerate(lines):
@@ -284,8 +386,9 @@ def te_parse_topic(path, sarga_dir, topic_id):
             if not in_vb:
                 if state == 'భావము':
                     buf.append('<div class="bhava-spacer"></div>')
-                buf.append('<div class="verse-block">'); in_vb = True
-            buf.append(f'<div class="verse">{inline_te(s)}</div>')
+                in_vb = True
+            verse_raw.append(s)
+            verse_html.append(f'<div class="verse">{inline_te(s)}</div>')
             state = 'verse'
             continue
         if s.startswith('**') and s.endswith('**') and len(s) > 4:
@@ -310,18 +413,18 @@ EN_SECTION_MAP = {
 }
 
 
-def en_flush_shloka(buf, deva_lines, iast_lines):
+def en_flush_shloka(buf, deva_lines, iast_lines, sarga_num, available_audio):
     if not deva_lines and not iast_lines:
         return
-    buf.append('<div class="verse-block">')
+    pieces = []
     if deva_lines:
-        buf.append(f'<div class="verse verse-deva">{"<br/>".join(inline_en(l) for l in deva_lines)}</div>')
+        pieces.append(f'<div class="verse verse-deva">{"<br/>".join(inline_en(l) for l in deva_lines)}</div>')
     if iast_lines:
-        buf.append(f'<div class="verse-iast">{"<br/>".join(inline_en(l) for l in iast_lines)}</div>')
-    buf.append('</div>')
+        pieces.append(f'<div class="verse-iast">{"<br/>".join(inline_en(l) for l in iast_lines)}</div>')
+    buf.append(verse_block_html(sarga_num, deva_lines + iast_lines, ''.join(pieces), available_audio))
 
 
-def en_parse_topic(path, sarga_dir, topic_id):
+def en_parse_topic(path, sarga_dir, topic_id, sarga_num, available_audio):
     text = path.read_text(encoding='utf-8')
     lines = text.split('\n')
     buf, title = [], path.stem
@@ -330,7 +433,7 @@ def en_parse_topic(path, sarga_dir, topic_id):
     deva_lines, iast_lines = [], []
 
     def flush_shloka():
-        en_flush_shloka(buf, deva_lines, iast_lines)
+        en_flush_shloka(buf, deva_lines, iast_lines, sarga_num, available_audio)
         deva_lines.clear(); iast_lines.clear()
 
     for raw in lines:
@@ -556,7 +659,7 @@ def build_front_matter(lang):
     print(f"  wrote {out.relative_to(SITE_DIR)}  ({len(entries)} pages)")
 
 
-def build_sarga(n, lang, topic_numbers):
+def build_sarga(n, lang, topic_numbers, available_audio):
     """topic_numbers: the authoritative list of topic numbers for this sarga
     (taken from the Telugu source, which is complete) so English gaps show
     as an explicit placeholder rather than silently vanishing from the nav."""
@@ -568,7 +671,7 @@ def build_sarga(n, lang, topic_numbers):
         tid = f"s{n}-t{num:02d}"
         tf = sarga_dir / f'topic_{num:02d}.md'
         if tf.exists():
-            parsed = parse_fn(tf, sarga_dir, tid)
+            parsed = parse_fn(tf, sarga_dir, tid, n, available_audio)
             topics.append({'id': tid, 'number': num, 'title': parsed['title'],
                             'image': parsed['image'], 'html': parsed['html'], 'pending': False})
         else:
@@ -629,6 +732,11 @@ def main():
     print("Copying images and fonts…")
     copy_assets()
 
+    print("Syncing verse-recitation audio…")
+    sync_audio_from_gdrive()
+    available_audio = {f.name for f in AUDIO_DEST.glob('*.wav')} if AUDIO_DEST.exists() else set()
+    print(f"  {len(available_audio)} audio file(s) available for linking")
+
     print("Building Telugu front matter…")
     build_front_matter('te')
     print("Building English front matter…")
@@ -638,9 +746,9 @@ def main():
         n = sarga['number']
         topic_numbers = [t['number'] for t in sarga['topics']]
         print(f"Building sarga-{n} (te)…")
-        build_sarga(n, 'te', topic_numbers)
+        build_sarga(n, 'te', topic_numbers, available_audio)
         print(f"Building sarga-{n} (en)…")
-        build_sarga(n, 'en', topic_numbers)
+        build_sarga(n, 'en', topic_numbers, available_audio)
 
     print("Done.")
 

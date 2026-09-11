@@ -17,6 +17,38 @@
 
   var els = {};
 
+  // ── Verse recitation audio ────────────────────────────────────────
+  // One shared <audio> element; each .verse-block with a data-audio
+  // attribute gets a play/pause button (added at build time only when a
+  // matching gs_<sarga>_<verse>.wav was actually synced — see
+  // tools/build_data.py). Starting a new verse stops whatever was playing.
+
+  var activeAudio = null;
+  var activeBtn = null;
+
+  function stopAudio() {
+    if (activeAudio) { activeAudio.pause(); }
+    if (activeBtn) { activeBtn.classList.remove('playing'); activeBtn.textContent = '▶'; }
+    activeAudio = null;
+    activeBtn = null;
+  }
+
+  function toggleVerseAudio(btn) {
+    var block = btn.closest('.verse-block');
+    var src = block && block.getAttribute('data-audio');
+    if (!src) return;
+    if (activeBtn === btn) { stopAudio(); return; }
+    stopAudio();
+    var audio = new Audio(src);
+    audio.addEventListener('ended', stopAudio);
+    audio.addEventListener('error', stopAudio);
+    audio.play();
+    btn.classList.add('playing');
+    btn.textContent = '⏸';
+    activeAudio = audio;
+    activeBtn = btn;
+  }
+
   function $(sel, root) { return (root || document).querySelector(sel); }
 
   function getJSON(path) {
@@ -243,6 +275,7 @@
   function render() {
     var route = parseHash();
     if (!route) { location.hash = DEFAULT_HASH; return; }
+    stopAudio();
     setLangUI(route.lang);
     if (sidebarLang !== route.lang) {
       sidebarLang = route.lang;
@@ -360,6 +393,10 @@
     els.scrim.addEventListener('click', closeSidebar);
     els.langBtns.forEach(function (b) {
       b.addEventListener('click', function () { switchLang(b.dataset.lang); });
+    });
+    els.content.addEventListener('click', function (e) {
+      var btn = e.target.closest('.play-btn');
+      if (btn) toggleVerseAudio(btn);
     });
 
     Promise.all([
