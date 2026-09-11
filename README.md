@@ -12,9 +12,14 @@ sibling `../ganapati-sambavam` repo — this folder never edits that repo.
 
 **Verse recitation audio.** Each shloka can carry a play button (▶) that
 plays a pre-recorded `.wav` — these come from a Google Drive folder
-(`AUDIO_GDRIVE_FOLDER_ID` in `tools/build_data.py`), named
-`gs_<sarga>_<verse-number-within-sarga>.wav` (e.g. `gs_1_1.wav` is Sarga 1,
-verse 1). The recordings themselves are generated separately by
+(`AUDIO_GDRIVE_FOLDER_ID` in `tools/build_data.py`), matched against either
+`gs_<sarga>_<verse-number-within-sarga>.wav` or `gs_<sarga>.<verse>.wav`
+(e.g. `gs_1_1.wav` / `gs_1.1.wav` — both mean Sarga 1, verse 1). Both
+separators are accepted because real sample recordings already dropped in
+`../ganapati-sambavam/audio/` use the dot form, while the naming was
+originally specified with an underscore — rather than guess which is
+authoritative, the build just matches whichever is actually present. The
+recordings themselves are generated separately by
 [Vāgdhenu](https://github.com/prathoshap/vagdhenu) (a Sanskrit chant
 text-to-speech model that needs a CUDA GPU — not something this build runs);
 this site only plays back whatever `.wav` files already exist in that Drive

@@ -135,17 +135,21 @@ def verse_block_html(sarga_num, raw_lines, inner_html, available_audio):
     """Wrap a shloka's rendered pada HTML in its .verse-block div, adding
     a play button + data-audio attribute when: this is a numbered main-sarga
     verse (sarga_num given, i.e. not front matter), a verse number could be
-    extracted, and a matching gs_<sarga>_<verse>.wav actually exists — so a
-    verse with no recorded audio yet renders with no button at all."""
+    extracted, and a matching audio file actually exists — so a verse with
+    no recorded audio yet renders with no button at all. Matches either
+    gs_<sarga>_<verse>.wav (underscore, as specified) or gs_<sarga>.<verse>.wav
+    (dot — seen in real sample files already dropped in ganapati-sambavam/audio/),
+    since the two disagree and it costs nothing to accept both."""
     attr, button = '', ''
     if sarga_num is not None:
         vnum = extract_verse_number(raw_lines)
         if vnum is not None:
-            fname = f'gs_{sarga_num}_{vnum}.wav'
-            if fname in available_audio:
-                attr = f' data-audio="audio/{fname}"'
-                button = ('<button type="button" class="play-btn" '
-                           'aria-label="Play recitation">▶</button>')
+            for fname in (f'gs_{sarga_num}_{vnum}.wav', f'gs_{sarga_num}.{vnum}.wav'):
+                if fname in available_audio:
+                    attr = f' data-audio="audio/{fname}"'
+                    button = ('<button type="button" class="play-btn" '
+                               'aria-label="Play recitation">▶</button>')
+                    break
     return f'<div class="verse-block"{attr}>{button}{inner_html}</div>'
 
 
