@@ -59,8 +59,12 @@ AUDIO_DEST = SITE_DIR / "audio"
 # images folder ganapati-sambavam/publishing/make_pdf_book.py reads.
 AUDIO_GDRIVE_FOLDER_ID = "1fSkt3tUU7Pb6g3kmGl6gN2cxbAqm0bP5"
 
-# English theme summaries (mirrors publishing/make_pdf_book_english.py —
-# no separate English metadata file exists in the source repo yet).
+# English theme summaries — one-sentence "what happens in this sarga"
+# blurbs (mirrors publishing/make_pdf_book_english.py). Distinct from
+# name_translation in chapter_topics.yaml, which is the sarga's actual
+# title translated (e.g. "Introduction to the Himalayas") rather than a
+# summary of its contents; no per-sarga source exists for these longer
+# blurbs, so they stay a hardcoded dict here.
 SARGA_THEMES_EN = {
     1:  "The Himalayas, Kashmir, and Nepal — a geographical panorama.",
     2:  "The wedding of Shiva and Parvati.",
@@ -410,8 +414,8 @@ def te_parse_topic(path, sarga_dir, topic_id, sarga_num, available_audio):
 # ══════════════════════════════════════════════════════════════════
 
 EN_SECTION_MAP = {
-    "पदच्छेदम् (Padacchedam):": ("padachedam", "पदच्छेदम् (Padacchedam)", True),
-    "अन्वयः (Anvaya):":         ("anvaya",     "अन्वयः (Anvaya)", True),
+    "पदच्छेदम् (Padacchedam):": ("padachedam", "Word Division", True),
+    "अन्वय (Anvaya):":         ("anvaya",     "Prose order of words", True),
     "Meaning of Terms:":        ("terms",      "Meaning of Terms", False),
     "Meaning:":                 ("bhava",      "Meaning", False),
 }
@@ -615,7 +619,8 @@ def build_meta(yaml_data):
             'name_te': s['name'],
             'title_te': s.get('title', s['name']),
             'description_te': s.get('description', ''),
-            'name_en': s['name_transliteration'],
+            'name_en': s.get('name_translation', s['name_transliteration']),
+            'name_transliteration_en': s['name_transliteration'],
             'description_en': SARGA_THEMES_EN.get(n, ''),
             'shloka_range': s['shloka_range'],
             'topics': [

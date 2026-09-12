@@ -6,10 +6,11 @@
  "sargas": [
   {
    "number": 1,
-   "name_te": "హిమగిరి పరిచయము",
+   "name_te": "హిమగిరిపరిచయము",
    "title_te": "హిమగిరిపరిచయోనామ ప్రథమః సర్గః",
    "description_te": "ఉత్తరదిశకు రక్షగా నిలచిన హిమగిరి వైభవము, కాశ్మీర్-నేపాల్ దేశముల ప్రకృతి సౌందర్యము, అమరనాథ్, పశుపతినాథ్, కేదారనాథ్, బద్రీనాథ్ పుణ్యక్షేత్రముల మహిమ మరియు హిమాలయ తీరమందు సేవలో నిలచిన భారత వీరభటుల వర్ణన.",
-   "name_en": "Himagiri Parichayamu",
+   "name_en": "Introduction to the Himalayas",
+   "name_transliteration_en": "Himagiri-Parichaya",
    "description_en": "The Himalayas, Kashmir, and Nepal — a geographical panorama.",
    "shloka_range": {
     "start": 1,
@@ -93,7 +94,7 @@
      "description_te": "నేపాల్‌లోని పశుపతినాథ్ స్వామి మహిమ మరియు నామార్థం.",
      "shloka_range": {
       "start": 55,
-      "end": 61
+      "end": 65
      }
     },
     {
@@ -103,7 +104,7 @@
      "description_te": "ఖాట్మండు, గోర్ఖాల శౌర్యం మరియు మహారాజ మహేంద్ర పరిచయం.",
      "shloka_range": {
       "start": 66,
-      "end": 78
+      "end": 84
      }
     },
     {
@@ -120,10 +121,11 @@
   },
   {
    "number": 2,
-   "name_te": "గిరిశ గిరిజా పాణిగ్రహణము",
+   "name_te": "గిరిశ-గిరిజా-పాణిగ్రహణము",
    "title_te": "గిరిశగిరిజాపాణిగ్రహోనామ ద్వితీయః సర్గః",
    "description_te": "హిమవంతుని వివాహము, పార్వతీదేవి జననము, ఆమె కఠోర తపస్సు, శివుని రాక మరియు వివాహ సంప్రదాయాలు - అశ్మారోహణము, లాజహోమము, సప్తపది, అగ్ని ప్రదక్షిణలు - పార్వతీదేవి కైలాసమునకు పయనము వరకు వర్ణించు సర్గ.",
-   "name_en": "Girisha Girija Panigrahanamu",
+   "name_en": "The Wedding of Shiva and Parvati",
+   "name_transliteration_en": "Girisha-Girija-Panigrahana",
    "description_en": "The wedding of Shiva and Parvati.",
    "shloka_range": {
     "start": 1,
@@ -234,10 +236,11 @@
   },
   {
    "number": 3,
-   "name_te": "యోగశక్తి చమత్కృతి",
+   "name_te": "యోగశక్తి-చమత్కృతి",
    "title_te": "యోగశక్తి చమత్కృతిర్నామ తృతీయః సర్గః",
    "description_te": "కైలాస వైభవము, శివుని యోగ సమాధి, పార్వతీదేవి తన యోగశక్తితో మట్టి బొమ్మలకు ప్రాణం పోయుట, బాలుని ద్వారపాలన మరియు శివుని రాక వర్ణించు సర్గ.",
-   "name_en": "Yogashakti Chamatkriti",
+   "name_en": "The Wonder of Yogic Power",
+   "name_transliteration_en": "Yogashakti-Chamatkriti",
    "description_en": "Parvati creates Ganesha from clay using yogic power.",
    "shloka_range": {
     "start": 1,
@@ -328,10 +331,11 @@
   },
   {
    "number": 4,
-   "name_te": "శాస్త్రార్థ శస్త్రీభావము",
+   "name_te": "శాస్త్రార్థశస్త్రీభావము",
    "title_te": "శాస్త్రార్థ శస్త్రీభావో నామ చతుర్థః సర్గః",
    "description_te": "బాలుడు శివుని అడ్డగించి తండ్రిత్వ సిద్ధాంతంపై వాదోపవాదం, శాస్త్రార్థం శస్త్రంగా మారుట, బాలుని శిరచ్ఛేదం మరియు పార్వతీదేవి విలాపం వర్ణించు సర్గ.",
-   "name_en": "Shastraartha Shastribeevamu",
+   "name_en": "The Debate, and Its Turn to Arms",
+   "name_transliteration_en": "Shastraartha-Shastribhava",
    "description_en": "The debate between Shiva and the boy, and the beheading.",
    "shloka_range": {
     "start": 1,
@@ -412,10 +416,11 @@
   },
   {
    "number": 5,
-   "name_te": "గజమనుజ యోజనోత్సవము",
+   "name_te": "గజమనుజయోజనోత్సవము",
    "title_te": "గజమనుజయోజనోత్సవో నామ పంచమః సర్గః",
    "description_te": "శివుని పశ్చాత్తాపం, గజ మస్తకం అన్వేషణ, గజ-మనుజ యోజనంతో గణపతి పునర్జన్మ, బాల్య క్రీడలు, గణాధిపత్యం మరియు గంధర్వ గానోత్సవం వర్ణించు సర్గ.",
-   "name_en": "Gajamanuja Yojanothsavamu",
+   "name_en": "The Union of Elephant and Man",
+   "name_transliteration_en": "Gaja-manuja-yojanothsava",
    "description_en": "The elephant-head transplant and Ganesha's childhood.",
    "shloka_range": {
     "start": 1,
@@ -435,7 +440,7 @@
     {
      "number": 2,
      "id": "s5-t02",
-     "name_te": "గజ మస్తకం కోసం అన్వేషణ",
+     "name_te": "గజమస్తకాన్వేషణ",
      "description_te": "శివుని ఆజ్ఞతో ప్రమథ గణాలు వెతుకుతూ వెళ్లి, ఉత్తర దిక్కున తలపెట్టుకుని పడుకున్న ఒక ఏనుగు పిల్లను చూసి దాని శిరస్సు తీసుకువచ్చుట.",
      "shloka_range": {
       "start": 19,
@@ -496,10 +501,11 @@
   },
   {
    "number": 6,
-   "name_te": "తాన్తైకదంత ప్రసంగము",
+   "name_te": "తాన్తైకదంతప్రసంగము",
    "title_te": "తానైకదంత ప్రసంగో నామ షష్ఠః సర్గః",
    "description_te": "కైలాస ద్వారపాలకుడైన గణపతికి పరశురాముని రాక, వాగ్యుద్ధం, గొడ్డలి దెబ్బకు ఏకదంతుడగుట, విష్ణువు శాంతి కల్పించుట మరియు హరి-హర అభేదోపదేశం వర్ణించు సర్గ.",
-   "name_en": "Tanaaikadanta Prasangamu",
+   "name_en": "The Episode of the Single Tusk",
+   "name_transliteration_en": "Tanaaikadanta-Prasanga",
    "description_en": "The confrontation with Parashurama and the loss of one tusk.",
    "shloka_range": {
     "start": 1,
@@ -590,10 +596,11 @@
   },
   {
    "number": 7,
-   "name_te": "మహాభారత లేఖాఖ్యానము",
+   "name_te": "మహాభారతలేఖనాఖ్యానము",
    "title_te": "మహాభారత లేఖాఖ్యానో నామ సప్తమః సర్గః",
    "description_te": "వ్యాస మహర్షి ఆహ్వానంపై గణపతి లేఖకుడిగా వచ్చి మహాభారతాన్ని లిఖించుట, కూట శ్లోకాల రహస్యం, గ్రంథ పూర్తిపై దేవతల పుష్పవర్షం వర్ణించు సర్గ.",
-   "name_en": "Mahabharata Lekhakhyanamu",
+   "name_en": "The Tale of the Writing of the Mahabharata",
+   "name_transliteration_en": "Mahabharata-Lekhanaakhyana",
    "description_en": "Ganesha serves as scribe of the Mahabharata for Vyasa.",
    "shloka_range": {
     "start": 1,
@@ -603,7 +610,7 @@
     {
      "number": 1,
      "id": "s7-t01",
-     "name_te": "వ్యాస మహర్షి పరిచయం",
+     "name_te": "వ్యాసమహర్షి పరిచయం",
      "description_te": "గణపతి యొక్క 12 కొత్త పేర్ల స్మరణ మరియు వ్యాసుని వైశిష్ట్యం.",
      "shloka_range": {
       "start": 1,
@@ -674,10 +681,11 @@
   },
   {
    "number": 8,
-   "name_te": "దేవమోదకోపహార గ్రహము",
+   "name_te": "దేవమోదకోపహారగ్రహము",
    "title_te": "దేవమోదకోపహార గ్రహో నామ అష్టమః సర్గః",
    "description_te": "దేవతలు అర్పించిన దివ్య మోదకం, కుమారస్వామితో పోటీలో తల్లిదండ్రులను ప్రదక్షిణ చేసి తెలివితో విజయం, చీమల హాస్యం మరియు చతుర్థి వరప్రదానం వర్ణించు సర్గ.",
-   "name_en": "Devamodakopahara Grahamu",
+   "name_en": "The Divine Offering of the Modaka",
+   "name_transliteration_en": "Devamodakopaharagraha",
    "description_en": "The divine modaka, and the circumambulation of his parents.",
    "shloka_range": {
     "start": 1,
@@ -769,9 +777,10 @@
   {
    "number": 9,
    "name_te": "గణశాసనోత్కర్షము",
-   "title_te": "గణశాసనోత్కర్షో నామ నవమః సర్గః",
+   "title_te": "గణశాసనోత్కర్షోనామ నవమః సర్గః",
    "description_te": "గణపతి తత్త్వాన్ని ఆధునిక గణతంత్ర రాజ్యంతో పోల్చుట, ఆదర్శ పాలన, స్త్రీ-పురుష సమానత్వం, ధర్మనిరపేక్షత, గణేశ అక్షరమాల మరియు భారతమాత వందనం వర్ణించు సర్గ.",
-   "name_en": "Ganashanothkarshhamu",
+   "name_en": "The Rule of the Ganas",
+   "name_transliteration_en": "Ganashanothkarshha",
    "description_en": "Ganesha's form as a metaphor for democratic governance.",
    "shloka_range": {
     "start": 1,
@@ -862,7 +871,7 @@
      "number": 9,
      "id": "s9-t09",
      "name_te": "మాతృభూమికి నివాళి",
-     "description_te": "భారతమాత పవిత్ర ధూళికి నమస్కారం, దేశం కోసం ప్రాణత్యాగం చేసిన వీరులకు (శహీదులకు) ఘనమైన నివాళి.",
+     "description_te": "భారతమాత పవిత్ర ధూళికి నమస్కారం, దేశం కోసం ప్రాణత్యాగం చేసిన అమర వీరులకు ఘననివాళి.",
      "shloka_range": {
       "start": 59,
       "end": 66
@@ -875,7 +884,8 @@
    "name_te": "కావ్యాంతర పుష్పార్పణము",
    "title_te": "కావ్యాంతర పుష్పార్పణో నామ దశమః సర్గః",
    "description_te": "రాజస్థాన్ వైభవం, కవి ప్రభుదత్త శాస్త్రి స్వీయ చరిత్ర, జాతీయ పతాకం, గాంధీ స్ఫూర్తి, ఝాన్సీ లక్ష్మీబాయి శౌర్యం, ఆదిశంకరాచార్యుల పాదుకా స్తుతి మరియు 'అస్తి' పద వైశిష్ట్యం వర్ణించు పదవ మరియు అంతిమ సర్గ.",
-   "name_en": "Kavyantara Pushparpanamu",
+   "name_en": "An Offering of Flowers from His Other Works",
+   "name_transliteration_en": "KavyantaraPushparpana",
    "description_en": "The poet's autobiography and his other works.",
    "shloka_range": {
     "start": 1,
@@ -895,7 +905,7 @@
     {
      "number": 2,
      "id": "s10-t02",
-     "name_te": "కవి స్వీయ చరిత్ర",
+     "name_te": "కవి స్వీయచరిత్ర",
      "description_te": "గ్రంథ రచయిత పండిత ప్రభుదత్త శాస్త్రి గారి ఆత్మకథ, ఆయన మిశ్ర వంశ చరిత్ర, తాత మరియు తండ్రి పరిచయం.",
      "shloka_range": {
       "start": 13,
@@ -935,7 +945,7 @@
     {
      "number": 6,
      "id": "s10-t06",
-     "name_te": "శ్రీరామ కీర్తి కౌస్తుభం",
+     "name_te": "శ్రీరామకీర్తికౌస్తుభం",
      "description_te": "సీతా-రాముల వివాహ సమయంలో మిథిల బాలుల పరిహాసం, శ్రీరాముని సమాధానం మరియు ధనుర్ధారణ గల కారణం.",
      "shloka_range": {
       "start": 61,
