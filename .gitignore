@@ -6,3 +6,6 @@ __pycache__/
 # (depends on which verses already have audio when it's generated), not
 # part of the deployed site. Regenerate with tools/export_vagdhenu_shards.py.
 vagdhenu_shards/
+
+# One-off analysis output — regenerate with tools/count_verses.py.
+verse_counts/
