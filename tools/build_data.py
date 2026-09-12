@@ -415,7 +415,7 @@ def te_parse_topic(path, sarga_dir, topic_id, sarga_num, available_audio):
 
 EN_SECTION_MAP = {
     "पदच्छेदम् (Padacchedam):": ("padachedam", "Word Division", True),
-    "अन्वय (Anvaya):":         ("anvaya",     "Prose order of words", True),
+    "अन्वयः (Anvaya):":         ("anvaya",     "Prose order of words", True),
     "Meaning of Terms:":        ("terms",      "Meaning of Terms", False),
     "Meaning:":                 ("bhava",      "Meaning", False),
 }
