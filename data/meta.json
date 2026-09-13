@@ -25,7 +25,9 @@
      "shloka_range": {
       "start": 1,
       "end": 22
-     }
+     },
+     "name_en": "Description of the Himalaya Mountain",
+     "pending_en": false
     },
     {
      "number": 2,
@@ -35,7 +37,9 @@
      "shloka_range": {
       "start": 23,
       "end": 24
-     }
+     },
+     "name_en": "Description of the Kashmir Region",
+     "pending_en": false
     },
     {
      "number": 3,
@@ -45,7 +49,9 @@
      "shloka_range": {
       "start": 25,
       "end": 28
-     }
+     },
+     "name_en": "Saffron (Kesar)",
+     "pending_en": false
     },
     {
      "number": 4,
@@ -55,7 +61,9 @@
      "shloka_range": {
       "start": 29,
       "end": 41
-     }
+     },
+     "name_en": "Jhelum River & Srinagar",
+     "pending_en": false
     },
     {
      "number": 5,
@@ -65,7 +73,9 @@
      "shloka_range": {
       "start": 42,
       "end": 45
-     }
+     },
+     "name_en": "Maharaja Karan Singh",
+     "pending_en": false
     },
     {
      "number": 6,
@@ -75,7 +85,9 @@
      "shloka_range": {
       "start": 46,
       "end": 49
-     }
+     },
+     "name_en": "Amarnath Darshanam",
+     "pending_en": false
     },
     {
      "number": 7,
@@ -85,7 +97,9 @@
      "shloka_range": {
       "start": 50,
       "end": 54
-     }
+     },
+     "name_en": "Nepal & Kasturi",
+     "pending_en": false
     },
     {
      "number": 8,
@@ -95,7 +109,9 @@
      "shloka_range": {
       "start": 55,
       "end": 65
-     }
+     },
+     "name_en": "Pashupatinath",
+     "pending_en": false
     },
     {
      "number": 9,
@@ -105,7 +121,9 @@
      "shloka_range": {
       "start": 66,
       "end": 84
-     }
+     },
+     "name_en": "Kathmandu & Mahendra",
+     "pending_en": false
     },
     {
      "number": 10,
@@ -115,7 +133,9 @@
      "shloka_range": {
       "start": 85,
       "end": 98
-     }
+     },
+     "name_en": "Kedarnath & Badrinath",
+     "pending_en": false
     }
    ]
   },
@@ -140,7 +160,9 @@
      "shloka_range": {
       "start": 1,
       "end": 13
-     }
+     },
+     "name_en": "The Marriage of Himavān",
+     "pending_en": false
     },
     {
      "number": 2,
@@ -150,7 +172,9 @@
      "shloka_range": {
       "start": 14,
       "end": 20
-     }
+     },
+     "name_en": "The Birth of Pārvatī",
+     "pending_en": false
     },
     {
      "number": 3,
@@ -160,7 +184,9 @@
      "shloka_range": {
       "start": 21,
       "end": 25
-     }
+     },
+     "name_en": "Arduous Austerities",
+     "pending_en": false
     },
     {
      "number": 4,
@@ -170,7 +196,9 @@
      "shloka_range": {
       "start": 26,
       "end": 32
-     }
+     },
+     "name_en": "The Arrival of Shiva",
+     "pending_en": false
     },
     {
      "number": 5,
@@ -180,7 +208,9 @@
      "shloka_range": {
       "start": 33,
       "end": 40
-     }
+     },
+     "name_en": "Shiva's Wedding Procession",
+     "pending_en": false
     },
     {
      "number": 6,
@@ -190,7 +220,9 @@
      "shloka_range": {
       "start": 41,
       "end": 49
-     }
+     },
+     "name_en": "Kankaṇa Mocanam & Kanyādānam",
+     "pending_en": false
     },
     {
      "number": 7,
@@ -200,7 +232,9 @@
      "shloka_range": {
       "start": 50,
       "end": 55
-     }
+     },
+     "name_en": "Ashmarohana & Lajahomam",
+     "pending_en": false
     },
     {
      "number": 8,
@@ -210,7 +244,9 @@
      "shloka_range": {
       "start": 56,
       "end": 67
-     }
+     },
+     "name_en": "Circumambulations of Agni & Saptapadi",
+     "pending_en": false
     },
     {
      "number": 9,
@@ -220,7 +256,9 @@
      "shloka_range": {
       "start": 68,
       "end": 70
-     }
+     },
+     "name_en": "Granthibandhanam & Sindooram",
+     "pending_en": false
     },
     {
      "number": 10,
@@ -230,7 +268,9 @@
      "shloka_range": {
       "start": 71,
       "end": 78
-     }
+     },
+     "name_en": "Parvati Devi's Farewell",
+     "pending_en": false
     }
    ]
   },
@@ -255,7 +295,9 @@
      "shloka_range": {
       "start": 1,
       "end": 9
-     }
+     },
+     "name_en": "Description of Mount Kailasa",
+     "pending_en": false
     },
     {
      "number": 2,
@@ -265,7 +307,9 @@
      "shloka_range": {
       "start": 10,
       "end": 26
-     }
+     },
+     "name_en": "Service of the Virtues of Niti-Shastra",
+     "pending_en": false
     },
     {
      "number": 3,
@@ -275,7 +319,9 @@
      "shloka_range": {
       "start": 27,
       "end": 43
-     }
+     },
+     "name_en": "The Samadhi of Shiva",
+     "pending_en": false
     },
     {
      "number": 4,
@@ -285,7 +331,9 @@
      "shloka_range": {
       "start": 44,
       "end": 55
-     }
+     },
+     "name_en": "Creation of Clay Figures",
+     "pending_en": false
     },
     {
      "number": 5,
@@ -295,7 +343,9 @@
      "shloka_range": {
       "start": 56,
       "end": 67
-     }
+     },
+     "name_en": "Prana Pratishtha (Infusion of Life)",
+     "pending_en": false
     },
     {
      "number": 6,
@@ -305,7 +355,9 @@
      "shloka_range": {
       "start": 68,
       "end": 80
-     }
+     },
+     "name_en": "The Sports of the Child & Parvati’s Bath",
+     "pending_en": false
     },
     {
      "number": 7,
@@ -315,7 +367,9 @@
      "shloka_range": {
       "start": 81,
       "end": 91
-     }
+     },
+     "name_en": "The Boy's Proclamation & The Argument of the Spirits",
+     "pending_en": false
     },
     {
      "number": 8,
@@ -325,7 +379,9 @@
      "shloka_range": {
       "start": 92,
       "end": 96
-     }
+     },
+     "name_en": "The Arrival of Shiva",
+     "pending_en": false
     }
    ]
   },
@@ -350,7 +406,9 @@
      "shloka_range": {
       "start": 1,
       "end": 10
-     }
+     },
+     "name_en": "The Arrival of Shiva & Questions",
+     "pending_en": false
     },
     {
      "number": 2,
@@ -360,7 +418,9 @@
      "shloka_range": {
       "start": 11,
       "end": 29
-     }
+     },
+     "name_en": "Devotion to the Motherland",
+     "pending_en": false
     },
     {
      "number": 3,
@@ -370,7 +430,9 @@
      "shloka_range": {
       "start": 30,
       "end": 47
-     }
+     },
+     "name_en": "The Doctrine of Paternity",
+     "pending_en": false
     },
     {
      "number": 4,
@@ -380,7 +442,9 @@
      "shloka_range": {
       "start": 48,
       "end": 65
-     }
+     },
+     "name_en": "The Logical Refutation of the Boy",
+     "pending_en": false
     },
     {
      "number": 5,
@@ -390,7 +454,9 @@
      "shloka_range": {
       "start": 66,
       "end": 75
-     }
+     },
+     "name_en": "Shiva's Wrath & Final Warning",
+     "pending_en": false
     },
     {
      "number": 6,
@@ -400,7 +466,9 @@
      "shloka_range": {
       "start": 76,
       "end": 79
-     }
+     },
+     "name_en": "The Decapitation",
+     "pending_en": false
     },
     {
      "number": 7,
@@ -410,7 +478,9 @@
      "shloka_range": {
       "start": 80,
       "end": 89
-     }
+     },
+     "name_en": "The Lament of Parvati",
+     "pending_en": false
     }
    ]
   },
@@ -435,7 +505,9 @@
      "shloka_range": {
       "start": 1,
       "end": 18
-     }
+     },
+     "name_en": "The Repentance & Apology of Shiva",
+     "pending_en": false
     },
     {
      "number": 2,
@@ -445,7 +517,9 @@
      "shloka_range": {
       "start": 19,
       "end": 36
-     }
+     },
+     "name_en": "The Search for the Elephant's Head",
+     "pending_en": false
     },
     {
      "number": 3,
@@ -455,7 +529,9 @@
      "shloka_range": {
       "start": 37,
       "end": 43
-     }
+     },
+     "name_en": "The Union of the Elephant and the Human",
+     "pending_en": false
     },
     {
      "number": 4,
@@ -465,7 +541,9 @@
      "shloka_range": {
       "start": 44,
       "end": 52
-     }
+     },
+     "name_en": "The Affection of Shiva and Parvati",
+     "pending_en": false
     },
     {
      "number": 5,
@@ -475,7 +553,9 @@
      "shloka_range": {
       "start": 53,
       "end": 58
-     }
+     },
+     "name_en": "Learning of Vidya",
+     "pending_en": false
     },
     {
      "number": 6,
@@ -485,7 +565,9 @@
      "shloka_range": {
       "start": 59,
       "end": 65
-     }
+     },
+     "name_en": "Gana-Adhipatyam & The Dance of the Yoginis",
+     "pending_en": false
     },
     {
      "number": 7,
@@ -495,7 +577,9 @@
      "shloka_range": {
       "start": 66,
       "end": 78
-     }
+     },
+     "name_en": "Gandharva Ganam",
+     "pending_en": false
     }
    ]
   },
@@ -520,7 +604,9 @@
      "shloka_range": {
       "start": 1,
       "end": 10
-     }
+     },
+     "name_en": "Praise of the Kundalas and Tusks",
+     "pending_en": false
     },
     {
      "number": 2,
@@ -530,7 +616,9 @@
      "shloka_range": {
       "start": 11,
       "end": 18
-     }
+     },
+     "name_en": "Ganapati as the Gatekeeper",
+     "pending_en": false
     },
     {
      "number": 3,
@@ -540,7 +628,9 @@
      "shloka_range": {
       "start": 19,
       "end": 30
-     }
+     },
+     "name_en": "Arrival of Parashurama & The Obstruction",
+     "pending_en": false
     },
     {
      "number": 4,
@@ -550,7 +640,9 @@
      "shloka_range": {
       "start": 31,
       "end": 56
-     }
+     },
+     "name_en": "The War of Words",
+     "pending_en": false
     },
     {
      "number": 5,
@@ -560,7 +652,9 @@
      "shloka_range": {
       "start": 57,
       "end": 59
-     }
+     },
+     "name_en": "The Strike of Parashurama",
+     "pending_en": false
     },
     {
      "number": 6,
@@ -570,7 +664,9 @@
      "shloka_range": {
       "start": 60,
       "end": 70
-     }
+     },
+     "name_en": "Lamentations & The Wrath of Parvati",
+     "pending_en": false
     },
     {
      "number": 7,
@@ -580,7 +676,9 @@
      "shloka_range": {
       "start": 71,
       "end": 82
-     }
+     },
+     "name_en": "The Arrival of Vishnu",
+     "pending_en": false
     },
     {
      "number": 8,
@@ -590,7 +688,9 @@
      "shloka_range": {
       "start": 83,
       "end": 88
-     }
+     },
+     "name_en": "Surrender & The Festival of the Single-Tusked Lord",
+     "pending_en": false
     }
    ]
   },
@@ -615,7 +715,9 @@
      "shloka_range": {
       "start": 1,
       "end": 5
-     }
+     },
+     "name_en": "Introduction to Vyasa Maharshi",
+     "pending_en": false
     },
     {
      "number": 2,
@@ -625,7 +727,9 @@
      "shloka_range": {
       "start": 6,
       "end": 10
-     }
+     },
+     "name_en": "Announcement for the Author",
+     "pending_en": false
     },
     {
      "number": 3,
@@ -635,7 +739,9 @@
      "shloka_range": {
       "start": 11,
       "end": 29
-     }
+     },
+     "name_en": "The Arrival of Ganapati & The Conditions",
+     "pending_en": false
     },
     {
      "number": 4,
@@ -645,7 +751,9 @@
      "shloka_range": {
       "start": 30,
       "end": 49
-     }
+     },
+     "name_en": "Topic 4",
+     "pending_en": true
     },
     {
      "number": 5,
@@ -655,7 +763,9 @@
      "shloka_range": {
       "start": 50,
       "end": 62
-     }
+     },
+     "name_en": "Topic 5",
+     "pending_en": true
     },
     {
      "number": 6,
@@ -665,7 +775,9 @@
      "shloka_range": {
       "start": 63,
       "end": 78
-     }
+     },
+     "name_en": "Explanations of Kūṭa Ślokas (Cryptic Verses)",
+     "pending_en": false
     },
     {
      "number": 7,
@@ -675,7 +787,9 @@
      "shloka_range": {
       "start": 79,
       "end": 93
-     }
+     },
+     "name_en": "Completion of the Work & Farewell",
+     "pending_en": false
     }
    ]
   },
@@ -700,7 +814,9 @@
      "shloka_range": {
       "start": 1,
       "end": 3
-     }
+     },
+     "name_en": "The Birth of Ganapati",
+     "pending_en": false
     },
     {
      "number": 2,
@@ -710,7 +826,9 @@
      "shloka_range": {
       "start": 4,
       "end": 13
-     }
+     },
+     "name_en": "Topic 2",
+     "pending_en": true
     },
     {
      "number": 3,
@@ -720,7 +838,9 @@
      "shloka_range": {
       "start": 14,
       "end": 33
-     }
+     },
+     "name_en": "Topic 3",
+     "pending_en": true
     },
     {
      "number": 4,
@@ -730,7 +850,9 @@
      "shloka_range": {
       "start": 34,
       "end": 39
-     }
+     },
+     "name_en": "The Condition for Circumambulating the Earth",
+     "pending_en": false
     },
     {
      "number": 5,
@@ -740,7 +862,9 @@
      "shloka_range": {
       "start": 40,
       "end": 44
-     }
+     },
+     "name_en": "Ganapati Pradakshina",
+     "pending_en": false
     },
     {
      "number": 6,
@@ -750,7 +874,9 @@
      "shloka_range": {
       "start": 45,
       "end": 51
-     }
+     },
+     "name_en": "Topic 6",
+     "pending_en": true
     },
     {
      "number": 7,
@@ -760,7 +886,9 @@
      "shloka_range": {
       "start": 52,
       "end": 64
-     }
+     },
+     "name_en": "Acquisition of Modaka & Amusement",
+     "pending_en": false
     },
     {
      "number": 8,
@@ -770,7 +898,9 @@
      "shloka_range": {
       "start": 65,
       "end": 73
-     }
+     },
+     "name_en": "Topic 8",
+     "pending_en": true
     }
    ]
   },
@@ -795,7 +925,9 @@
      "shloka_range": {
       "start": 1,
       "end": 14
-     }
+     },
+     "name_en": "Comparison of Republic (Democracy)",
+     "pending_en": false
     },
     {
      "number": 2,
@@ -805,7 +937,9 @@
      "shloka_range": {
       "start": 15,
       "end": 20
-     }
+     },
+     "name_en": "The Ideal State",
+     "pending_en": false
     },
     {
      "number": 3,
@@ -815,7 +949,9 @@
      "shloka_range": {
       "start": 21,
       "end": 26
-     }
+     },
+     "name_en": "Equality & Family Planning",
+     "pending_en": false
     },
     {
      "number": 4,
@@ -825,7 +961,9 @@
      "shloka_range": {
       "start": 27,
       "end": 31
-     }
+     },
+     "name_en": "Qualities of a Ruler",
+     "pending_en": false
     },
     {
      "number": 5,
@@ -835,7 +973,9 @@
      "shloka_range": {
       "start": 32,
       "end": 34
-     }
+     },
+     "name_en": "Secularism (Dharma Nirapekshata)",
+     "pending_en": false
     },
     {
      "number": 6,
@@ -845,7 +985,9 @@
      "shloka_range": {
       "start": 35,
       "end": 40
-     }
+     },
+     "name_en": "Ganesha Aksharamala",
+     "pending_en": false
     },
     {
      "number": 7,
@@ -855,7 +997,9 @@
      "shloka_range": {
       "start": 41,
       "end": 47
-     }
+     },
+     "name_en": "The Principle of Dvimatura",
+     "pending_en": false
     },
     {
      "number": 8,
@@ -865,7 +1009,9 @@
      "shloka_range": {
       "start": 48,
       "end": 58
-     }
+     },
+     "name_en": "Ganesha in Festivals",
+     "pending_en": false
     },
     {
      "number": 9,
@@ -875,7 +1021,9 @@
      "shloka_range": {
       "start": 59,
       "end": 66
-     }
+     },
+     "name_en": "Homage to the Motherland",
+     "pending_en": false
     }
    ]
   },
@@ -900,7 +1048,9 @@
      "shloka_range": {
       "start": 1,
       "end": 12
-     }
+     },
+     "name_en": "Description of Rajasthan",
+     "pending_en": false
     },
     {
      "number": 2,
@@ -910,7 +1060,9 @@
      "shloka_range": {
       "start": 13,
       "end": 26
-     }
+     },
+     "name_en": "The Poet's Autobiography",
+     "pending_en": false
     },
     {
      "number": 3,
@@ -920,7 +1072,9 @@
      "shloka_range": {
       "start": 27,
       "end": 36
-     }
+     },
+     "name_en": "Education & Awards",
+     "pending_en": false
     },
     {
      "number": 4,
@@ -930,7 +1084,9 @@
      "shloka_range": {
       "start": 37,
       "end": 49
-     }
+     },
+     "name_en": "Problem-Solving Verses (Samasya Puranas)",
+     "pending_en": false
     },
     {
      "number": 5,
@@ -940,7 +1096,9 @@
      "shloka_range": {
       "start": 50,
       "end": 60
-     }
+     },
+     "name_en": "National Flag & Gandhi",
+     "pending_en": false
     },
     {
      "number": 6,
@@ -950,7 +1108,9 @@
      "shloka_range": {
       "start": 61,
       "end": 65
-     }
+     },
+     "name_en": "Śrīrāma Kīrti Kaustubham",
+     "pending_en": false
     },
     {
      "number": 7,
@@ -960,7 +1120,9 @@
      "shloka_range": {
       "start": 66,
       "end": 70
-     }
+     },
+     "name_en": "The Queen of Jhansi & The Birth of Krishna",
+     "pending_en": false
     },
     {
      "number": 8,
@@ -970,7 +1132,9 @@
      "shloka_range": {
       "start": 71,
       "end": 78
-     }
+     },
+     "name_en": "Gita Vyangya Mandakini & Sanskrit",
+     "pending_en": false
     },
     {
      "number": 9,
@@ -980,7 +1144,9 @@
      "shloka_range": {
       "start": 79,
       "end": 86
-     }
+     },
+     "name_en": "Dhanvantari & Shankaracharya",
+     "pending_en": false
     },
     {
      "number": 10,
@@ -990,7 +1156,9 @@
      "shloka_range": {
       "start": 87,
       "end": 90
-     }
+     },
+     "name_en": "The Significance of the Word 'Asti'",
+     "pending_en": false
     }
    ]
   }

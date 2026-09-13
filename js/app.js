@@ -141,13 +141,12 @@
   }
 
   function topicLabel(sargaM, topic) {
+    // Both name_te and name_en are baked into meta.json at build time
+    // (tools/build_data.py) — no per-sarga fetch needed just to label
+    // the sidebar, so every sarga shows real topic names immediately,
+    // not just the one currently being read.
     if (currentLang === 'te') return topic.name_te;
-    var cached = sargaCache['en-' + sargaM.number];
-    if (cached) {
-      var t = cached.find(function (x) { return x.id === 's' + sargaM.number + '-t' + String(topic.number).padStart(2, '0'); });
-      if (t) return t.title;
-    }
-    return 'Topic ' + topic.number;
+    return topic.name_en || ('Topic ' + topic.number);
   }
 
   function navGroup(groupId, title, num, items) {
@@ -188,19 +187,6 @@
     });
   }
 
-  function refreshSidebarLabelsFor(sargaNum) {
-    var s = sargaMeta(sargaNum);
-    var list = els.sidebarContent.querySelector('[data-group-list="s' + sargaNum + '"]');
-    if (!s || !list) return;
-    var links = list.querySelectorAll('a');
-    s.topics.forEach(function (t, i) {
-      var a = links[i];
-      if (!a) return;
-      var range = t.shloka_range.start + '–' + t.shloka_range.end;
-      a.innerHTML = escapeHtml(topicLabel(s, t)) + ' <span class="range">(' + range + ')</span>';
-    });
-  }
-
   function escapeHtml(s) {
     var d = document.createElement('div');
     d.textContent = s;
@@ -218,7 +204,7 @@
       s.topics.forEach(function (t) {
         out.push({
           kind: 'topic', sarga: s.number, topicNum: t.number,
-          label: 'Sarga ' + s.number + ' · ' + (lang === 'te' ? t.name_te : 'Topic ' + t.number),
+          label: 'Sarga ' + s.number + ' · ' + (lang === 'te' ? t.name_te : (t.name_en || ('Topic ' + t.number))),
         });
       });
     });
@@ -332,8 +318,6 @@
       els.content.innerHTML = pendingBanner + topic.html + renderPageNav(route);
       renderBreadcrumb(route);
       window.scrollTo(0, 0);
-
-      if (route.lang === 'en') refreshSidebarLabelsFor(route.sarga);
     }).catch(function (err) {
       els.content.innerHTML = '<p class="error">' + escapeHtml(err.message) + '</p>';
     });

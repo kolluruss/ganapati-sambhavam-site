@@ -704,6 +704,7 @@ def build_sarga(n, lang, topic_numbers, available_audio):
     out = DATA_DIR / lang / f'sarga-{n}.json'
     out.write_text(json.dumps(topics, ensure_ascii=False, indent=1), encoding='utf-8')
     print(f"  wrote {out.relative_to(SITE_DIR)}  ({len(topics)} topics)")
+    return topics
 
 
 def copy_assets():
@@ -745,8 +746,6 @@ def main():
     with open(YAML_PATH, encoding='utf-8') as f:
         yaml_data = yaml.safe_load(f)
     meta = build_meta(yaml_data)
-    (DATA_DIR / 'meta.json').write_text(json.dumps(meta, ensure_ascii=False, indent=1), encoding='utf-8')
-    print(f"  wrote {(DATA_DIR / 'meta.json').relative_to(SITE_DIR)}")
 
     print("Copying images and fonts…")
     copy_assets()
@@ -768,7 +767,22 @@ def main():
         print(f"Building sarga-{n} (te)…")
         build_sarga(n, 'te', topic_numbers, available_audio)
         print(f"Building sarga-{n} (en)…")
-        build_sarga(n, 'en', topic_numbers, available_audio)
+        en_topics = build_sarga(n, 'en', topic_numbers, available_audio)
+        # Bake the real English topic title (parsed from that topic's own
+        # markdown H1) into meta.json, same as name_te already is — so the
+        # sidebar can show every sarga's real English topic names up front
+        # without needing that sarga's data/en/sarga-N.json fetched first
+        # (previously it showed a generic "Topic N" placeholder for any
+        # sarga not yet visited in English mode).
+        en_by_number = {t['number']: t for t in en_topics}
+        for topic in sarga['topics']:
+            en_t = en_by_number.get(topic['number'])
+            if en_t:
+                topic['name_en'] = en_t['title']
+                topic['pending_en'] = en_t['pending']
+
+    (DATA_DIR / 'meta.json').write_text(json.dumps(meta, ensure_ascii=False, indent=1), encoding='utf-8')
+    print(f"wrote {(DATA_DIR / 'meta.json').relative_to(SITE_DIR)}")
 
     print("Done.")
 
