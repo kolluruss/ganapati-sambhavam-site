@@ -20,8 +20,10 @@
   // ── Verse recitation audio ────────────────────────────────────────
   // One shared <audio> element; each .verse-block with a data-audio
   // attribute gets a play/pause button (added at build time only when a
-  // matching gs_<sarga>_<verse>.wav was actually synced — see
-  // tools/build_data.py). Starting a new verse stops whatever was playing.
+  // matching gs_<sarga>_<verse> audio (.wav or .mp4) was actually synced
+  // — see tools/build_data.py. new Audio(src) plays either format based
+  // on the file itself, no extension-specific handling needed here.
+  // Starting a new verse stops whatever was playing.
 
   var activeAudio = null;
   var activeBtn = null;

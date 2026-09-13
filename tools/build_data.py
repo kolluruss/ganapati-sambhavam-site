@@ -14,8 +14,9 @@ Reads:
   ../ganapati-sambavam/images/*.png
   ../ganapati-sambavam/publishing/fonts_cache/*.ttf
   ../ganapati-sambavam/markdown/fonts_cache/*.ttf
-  Google Drive folder AUDIO_GDRIVE_FOLDER_ID (verse-recitation .wav files,
-  gs_<sarga>_<verse>.wav) — requires GOOGLE_API_KEY in the environment;
+  Google Drive folder AUDIO_GDRIVE_FOLDER_ID (verse-recitation audio,
+  gs_<sarga>_<verse>.wav or gs_<sarga>_<verse>.mp4 — both formats are
+  synced and playable) — requires GOOGLE_API_KEY in the environment;
   silently skipped without it, so a local run without the key still
   works, just with no play buttons.
 
@@ -27,7 +28,7 @@ Writes (into this site folder):
   data/en/sarga-N.json      — English sarga N topics (N = 1..10)
   images/*.png, *.jpeg      — copied illustrations
   fonts/*.ttf               — copied fonts
-  audio/gs_*.wav            — synced verse-recitation audio (if available)
+  audio/gs_*.wav, gs_*.mp4  — synced verse-recitation audio (if available)
 
 Re-run any time the source markdown changes; this script does not
 modify anything in ../ganapati-sambavam.
@@ -54,10 +55,13 @@ AUDIO_DEST = SITE_DIR / "audio"
 
 # Verse-recitation audio (Vagdhenu-generated), shared by both languages
 # since it's a Sanskrit chant — independent of the Telugu/English gloss.
-# Files are named gs_<sarga>_<verse-number-within-sarga>.wav; the Drive
-# folder must be shared "Anyone with the link: Viewer", same as the
-# images folder ganapati-sambavam/publishing/make_pdf_book.py reads.
+# Files are named gs_<sarga>_<verse-number-within-sarga>, as either .wav
+# or .mp4 (both are synced and both play fine via the browser's <audio>
+# element); the Drive folder must be shared "Anyone with the link:
+# Viewer", same as the images folder
+# ganapati-sambavam/publishing/make_pdf_book.py reads.
 AUDIO_GDRIVE_FOLDER_ID = "1fSkt3tUU7Pb6g3kmGl6gN2cxbAqm0bP5"
+AUDIO_EXTENSIONS = (".wav", ".mp4")
 
 # English theme summaries — one-sentence "what happens in this sarga"
 # blurbs (mirrors publishing/make_pdf_book_english.py). Distinct from
@@ -140,38 +144,44 @@ def verse_block_html(sarga_num, raw_lines, inner_html, available_audio):
     a play button + data-audio attribute when: this is a numbered main-sarga
     verse (sarga_num given, i.e. not front matter), a verse number could be
     extracted, and a matching audio file actually exists — so a verse with
-    no recorded audio yet renders with no button at all. Matches either
-    gs_<sarga>_<verse>.wav (underscore, as specified) or gs_<sarga>.<verse>.wav
-    (dot — seen in real sample files already dropped in ganapati-sambavam/audio/),
-    since the two disagree and it costs nothing to accept both."""
+    no recorded audio yet renders with no button at all. Matches
+    gs_<sarga>_<verse> (underscore, as specified) or gs_<sarga>.<verse>
+    (dot — seen in real sample files already dropped in
+    ganapati-sambavam/audio/), in either .wav or .mp4 — both play fine via
+    the browser's <audio> element, and different verses have arrived in
+    different formats, so all four combinations are checked."""
     attr, button = '', ''
     if sarga_num is not None:
         vnum = extract_verse_number(raw_lines)
         if vnum is not None:
-            for fname in (f'gs_{sarga_num}_{vnum}.wav', f'gs_{sarga_num}.{vnum}.wav'):
-                if fname in available_audio:
-                    attr = f' data-audio="audio/{fname}"'
-                    button = ('<button type="button" class="play-btn" '
-                               'aria-label="Play recitation">▶</button>')
+            for sep in ('_', '.'):
+                for ext in AUDIO_EXTENSIONS:
+                    fname = f'gs_{sarga_num}{sep}{vnum}{ext}'
+                    if fname in available_audio:
+                        attr = f' data-audio="audio/{fname}"'
+                        button = ('<button type="button" class="play-btn" '
+                                   'aria-label="Play recitation">▶</button>')
+                        break
+                if attr:
                     break
     return f'<div class="verse-block"{attr}>{button}{inner_html}</div>'
 
 
 def sync_audio_from_gdrive(force=False):
-    """Download verse-recitation .wav files into audio/, incrementally —
-    unlike make_pdf_book.py's image sync (which skips entirely once any
-    local file exists), this always lists the Drive folder and fetches
-    only files not already present, so newly recorded verses get picked
-    up on the next build without wiping already-committed audio. Audio is
-    an optional enhancement: with no GOOGLE_API_KEY (e.g. a local run with
-    nothing exported) this just keeps whatever is already in audio/ and
-    every other verse renders with no play button, rather than failing
-    the build."""
+    """Download verse-recitation audio (.wav or .mp4) into audio/,
+    incrementally — unlike make_pdf_book.py's image sync (which skips
+    entirely once any local file exists), this always lists the Drive
+    folder and fetches only files not already present, so newly recorded
+    verses get picked up on the next build without wiping
+    already-committed audio. Audio is an optional enhancement: with no
+    GOOGLE_API_KEY (e.g. a local run with nothing exported) this just
+    keeps whatever is already in audio/ and every other verse renders
+    with no play button, rather than failing the build."""
     import os
     AUDIO_DEST.mkdir(parents=True, exist_ok=True)
     api_key = os.environ.get("GOOGLE_API_KEY")
     if not api_key:
-        existing = list(AUDIO_DEST.glob("*.wav"))
+        existing = [f for f in AUDIO_DEST.glob("*") if f.suffix.lower() in AUDIO_EXTENSIONS]
         print(f"  GOOGLE_API_KEY not set — using {len(existing)} already-cached audio file(s), no sync")
         return
     try:
@@ -195,9 +205,9 @@ def sync_audio_from_gdrive(force=False):
         page_token = resp.get("nextPageToken")
         if not page_token:
             break
-    wavs = [f for f in files if f["name"].endswith(".wav")]
-    to_fetch = [f for f in wavs if force or not (AUDIO_DEST / f["name"]).exists()]
-    print(f"  Found {len(wavs)} audio file(s) in Drive, {len(to_fetch)} new", flush=True)
+    audio_files = [f for f in files if f["name"].lower().endswith(AUDIO_EXTENSIONS)]
+    to_fetch = [f for f in audio_files if force or not (AUDIO_DEST / f["name"]).exists()]
+    print(f"  Found {len(audio_files)} audio file(s) in Drive, {len(to_fetch)} new", flush=True)
     for f in to_fetch:
         dest = AUDIO_DEST / f["name"]
         req = service.files().get_media(fileId=f["id"])
@@ -743,7 +753,8 @@ def main():
 
     print("Syncing verse-recitation audio…")
     sync_audio_from_gdrive()
-    available_audio = {f.name for f in AUDIO_DEST.glob('*.wav')} if AUDIO_DEST.exists() else set()
+    available_audio = ({f.name for f in AUDIO_DEST.glob('*') if f.suffix.lower() in AUDIO_EXTENSIONS}
+                        if AUDIO_DEST.exists() else set())
     print(f"  {len(available_audio)} audio file(s) available for linking")
 
     print("Building Telugu front matter…")

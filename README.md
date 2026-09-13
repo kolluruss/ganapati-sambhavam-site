@@ -11,18 +11,21 @@ pre-generated JSON. Content is generated from the markdown source in the
 sibling `../ganapati-sambavam` repo — this folder never edits that repo.
 
 **Verse recitation audio.** Each shloka can carry a play button (▶) that
-plays a pre-recorded `.wav` — these come from a Google Drive folder
-(`AUDIO_GDRIVE_FOLDER_ID` in `tools/build_data.py`), matched against either
-`gs_<sarga>_<verse-number-within-sarga>.wav` or `gs_<sarga>.<verse>.wav`
-(e.g. `gs_1_1.wav` / `gs_1.1.wav` — both mean Sarga 1, verse 1). Both
-separators are accepted because real sample recordings already dropped in
-`../ganapati-sambavam/audio/` use the dot form, while the naming was
-originally specified with an underscore — rather than guess which is
-authoritative, the build just matches whichever is actually present. The
-recordings themselves are generated separately by
+plays a pre-recorded recording, in either **`.wav` or `.mp4`** — both are
+synced and both play fine via the browser's `<audio>` element. These come
+from a Google Drive folder (`AUDIO_GDRIVE_FOLDER_ID` in
+`tools/build_data.py`), matched against `gs_<sarga>_<verse-number-within-sarga>`
+or `gs_<sarga>.<verse>` (e.g. `gs_1_1.wav` / `gs_1.1.mp4` — both mean Sarga
+1, verse 1) in either extension — four combinations checked per verse in
+total. Both separators are accepted because real sample recordings already
+dropped in `../ganapati-sambavam/audio/` use the dot form, while the naming
+was originally specified with an underscore — rather than guess which is
+authoritative, the build just matches whichever is actually present (same
+reasoning for accepting both audio formats — different verses have arrived
+in different formats). The recordings themselves are generated separately by
 [Vāgdhenu](https://github.com/prathoshap/vagdhenu) (a Sanskrit chant
 text-to-speech model that needs a CUDA GPU — not something this build runs);
-this site only plays back whatever `.wav` files already exist in that Drive
+this site only plays back whatever audio files already exist in that Drive
 folder. A shloka with no matching file yet simply renders with no button —
 nothing breaks, there's no placeholder or broken player. The same audio is
 used for both languages (it's the Sanskrit chant, independent of the
@@ -62,9 +65,9 @@ This reads `../ganapati-sambavam/markdown/{telugu,english}/…` and
 - `data/te/sarga-0.json`, `data/en/sarga-0.json` — front matter (foreword,
   poet bio, dedication, etc.)
 - `images/*`, `fonts/*` — copied from the source repo
-- `audio/gs_*.wav` — synced from Google Drive (see above), incrementally:
-  only files not already in `audio/` are downloaded, so already-committed
-  recordings aren't re-fetched on every rebuild
+- `audio/gs_*.wav`, `audio/gs_*.mp4` — synced from Google Drive (see above),
+  incrementally: only files not already in `audio/` are downloaded, so
+  already-committed recordings aren't re-fetched on every rebuild
 
 It requires `pyyaml` (`pip install pyyaml` if you don't already have it from
 working in `../ganapati-sambavam/publishing`). Audio sync additionally needs
@@ -72,7 +75,7 @@ working in `../ganapati-sambavam/publishing`). Audio sync additionally needs
 `google-auth-oauthlib`, `google-auth-httplib2`) plus a `GOOGLE_API_KEY`
 environment variable — the same key `../ganapati-sambavam/publishing` uses
 for images. Without that key set, the build just skips syncing and keeps
-whatever `.wav` files are already in `audio/` (empty on a first checkout,
+whatever audio files are already in `audio/` (empty on a first checkout,
 so no play buttons appear) — it never fails the build. The Drive folder
 must be shared "Anyone with the link: Viewer", same as the images folder.
 
