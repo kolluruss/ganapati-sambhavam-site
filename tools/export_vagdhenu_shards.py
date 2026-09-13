@@ -20,7 +20,7 @@ Reads:
   ../ganapati-sambavam/markdown/english/sarga-N/topic_NN.md
   (Devanagari lines only — the IAST transliteration alongside them is
   ignored; Vagdhenu's example input is Devanagari)
-  audio/*.wav, audio/*.mp4 (this site's own synced folder) plus, as a
+  audio/*.wav, audio/*.mp3 (this site's own synced folder) plus, as a
   fallback, the same in ../ganapati-sambavam/audio/ (a local scratch
   folder some verses' test recordings have been dropped into directly)
   — verses already covered by either are EXCLUDED from the export, so
@@ -154,9 +154,9 @@ def existing_audio_verse_numbers(sarga_num):
     """Verse numbers (within this sarga) that already have a synced
     recording, checking both this site's audio/ and the content repo's
     local scratch audio/ folder, matching gs_<n>_<v> or gs_<n>.<v>
-    (both separators exist in the wild) in either .wav or .mp4 (both
+    (both separators exist in the wild) in either .wav or .mp3 (both
     formats exist in the wild too — see build_data.py)."""
-    pat = re.compile(rf'^gs_{sarga_num}[._](\d+)\.(?:wav|mp4)$', re.IGNORECASE)
+    pat = re.compile(rf'^gs_{sarga_num}[._](\d+)\.(?:wav|mp3)$', re.IGNORECASE)
     found = set()
     for d in (SITE_AUDIO_DIR, SCRATCH_AUDIO_DIR):
         if not d.is_dir():

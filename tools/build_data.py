@@ -15,7 +15,7 @@ Reads:
   ../ganapati-sambavam/publishing/fonts_cache/*.ttf
   ../ganapati-sambavam/markdown/fonts_cache/*.ttf
   Google Drive folder AUDIO_GDRIVE_FOLDER_ID (verse-recitation audio,
-  gs_<sarga>_<verse>.wav or gs_<sarga>_<verse>.mp4 — both formats are
+  gs_<sarga>_<verse>.wav or gs_<sarga>_<verse>.mp3 — both formats are
   synced and playable) — requires GOOGLE_API_KEY in the environment;
   silently skipped without it, so a local run without the key still
   works, just with no play buttons.
@@ -28,7 +28,7 @@ Writes (into this site folder):
   data/en/sarga-N.json      — English sarga N topics (N = 1..10)
   images/*.png, *.jpeg      — copied illustrations
   fonts/*.ttf               — copied fonts
-  audio/gs_*.wav, gs_*.mp4  — synced verse-recitation audio (if available)
+  audio/gs_*.wav, gs_*.mp3  — synced verse-recitation audio (if available)
 
 Re-run any time the source markdown changes; this script does not
 modify anything in ../ganapati-sambavam.
@@ -56,12 +56,12 @@ AUDIO_DEST = SITE_DIR / "audio"
 # Verse-recitation audio (Vagdhenu-generated), shared by both languages
 # since it's a Sanskrit chant — independent of the Telugu/English gloss.
 # Files are named gs_<sarga>_<verse-number-within-sarga>, as either .wav
-# or .mp4 (both are synced and both play fine via the browser's <audio>
+# or .mp3 (both are synced and both play fine via the browser's <audio>
 # element); the Drive folder must be shared "Anyone with the link:
 # Viewer", same as the images folder
 # ganapati-sambavam/publishing/make_pdf_book.py reads.
 AUDIO_GDRIVE_FOLDER_ID = "1fSkt3tUU7Pb6g3kmGl6gN2cxbAqm0bP5"
-AUDIO_EXTENSIONS = (".wav", ".mp4")
+AUDIO_EXTENSIONS = (".wav", ".mp3")
 
 # English theme summaries — one-sentence "what happens in this sarga"
 # blurbs (mirrors publishing/make_pdf_book_english.py). Distinct from
@@ -147,7 +147,7 @@ def verse_block_html(sarga_num, raw_lines, inner_html, available_audio):
     no recorded audio yet renders with no button at all. Matches
     gs_<sarga>_<verse> (underscore, as specified) or gs_<sarga>.<verse>
     (dot — seen in real sample files already dropped in
-    ganapati-sambavam/audio/), in either .wav or .mp4 — both play fine via
+    ganapati-sambavam/audio/), in either .wav or .mp3 — both play fine via
     the browser's <audio> element, and different verses have arrived in
     different formats, so all four combinations are checked."""
     attr, button = '', ''
@@ -168,7 +168,7 @@ def verse_block_html(sarga_num, raw_lines, inner_html, available_audio):
 
 
 def sync_audio_from_gdrive(force=False):
-    """Download verse-recitation audio (.wav or .mp4) into audio/,
+    """Download verse-recitation audio (.wav or .mp3) into audio/,
     incrementally — unlike make_pdf_book.py's image sync (which skips
     entirely once any local file exists), this always lists the Drive
     folder and fetches only files not already present, so newly recorded
