@@ -154,12 +154,14 @@ def existing_audio_verse_numbers(sarga_num):
     """Verse numbers (within this sarga) that already have a synced
     recording, checking both this site's audio/ and the content repo's
     local scratch audio/ folder. Matches the current naming
-    (sarga-<n>-shloka-<v>.mp3) as well as the older gs_<n>_<v> /
-    gs_<n>.<v> forms (both separators exist in the wild) in either
-    .wav or .mp3 — see build_data.py's audio_filename_candidates,
-    which recognizes the same set."""
+    (sarga-<n>-shloka-<v>.mp3 — zero-padded as actually synced from
+    Drive, e.g. sarga-01-shloka-046.mp3, but unpadded is accepted too)
+    as well as the older gs_<n>_<v> / gs_<n>.<v> forms (both
+    separators exist in the wild) in either .wav or .mp3 — see
+    build_data.py's audio_filename_candidates, which recognizes the
+    same set."""
     patterns = [
-        re.compile(rf'^sarga-{sarga_num}-shloka-(\d+)\.(?:wav|mp3)$', re.IGNORECASE),
+        re.compile(rf'^sarga-0*{sarga_num}-shloka-0*(\d+)\.(?:wav|mp3)$', re.IGNORECASE),
         re.compile(rf'^gs_{sarga_num}[._](\d+)\.(?:wav|mp3)$', re.IGNORECASE),
     ]
     found = set()
@@ -240,12 +242,12 @@ def build_sarga_shard(n, topic_ranges):
                 skipped_have_audio.append(vnum)
                 continue
             entries.append({
-                "id": f"sarga-{n}-shloka-{vnum}",
+                "id": f"sarga-{n:02d}-shloka-{vnum:03d}",
                 "meter": DEFAULT_METER,
                 "padas": padas,
                 "seed": DEFAULT_SEED,
                 "no_sandhi": True,
-                "out": f"out/sarga-{n}-shloka-{vnum}.mp3",
+                "out": f"out/sarga-{n:02d}-shloka-{vnum:03d}.mp3",
             })
 
     entries.sort(key=lambda e: int(e["id"].rsplit('-', 1)[1]))

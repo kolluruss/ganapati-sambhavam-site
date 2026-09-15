@@ -72,9 +72,15 @@ AUDIO_EXTENSIONS = (".wav", ".mp3")
 def audio_filename_candidates(sarga_num, vnum):
     """Every filename (current + legacy naming, both extensions) that
     would represent this verse's recitation audio, current naming
-    first."""
-    for ext in AUDIO_EXTENSIONS:
-        yield f'sarga-{sarga_num}-shloka-{vnum}{ext}'
+    first. The current naming is zero-padded as actually synced from
+    Drive (sarga-01-shloka-046.mp3 — 2-digit sarga, 3-digit shloka),
+    but the unpadded form is tried too in case that ever changes.
+    vnum comes from extract_verse_number as a numeric string."""
+    vnum_int = int(vnum)
+    for sarga_str in (f'{sarga_num:02d}', str(sarga_num)):
+        for vnum_str in (f'{vnum_int:03d}', str(vnum_int)):
+            for ext in AUDIO_EXTENSIONS:
+                yield f'sarga-{sarga_str}-shloka-{vnum_str}{ext}'
     for sep in ('_', '.'):
         for ext in AUDIO_EXTENSIONS:
             yield f'gs_{sarga_num}{sep}{vnum}{ext}'
