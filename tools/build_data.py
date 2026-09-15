@@ -653,12 +653,15 @@ def build_meta(yaml_data):
     }
 
 
-def build_front_matter(lang):
+def build_front_matter(lang, dirname='sarga-0'):
+    """Builds a front- or back-matter section (sarga-0 = front matter,
+    sarga-11 = back/end matter) — both use the same loose markdown shape
+    (translator bio, photo galleries, a lone cover-image page)."""
     parse_fn = te_parse_sarga0_file if lang == 'te' else en_parse_sarga0_file
     base = TE_BASE if lang == 'te' else EN_BASE
-    s0_dir = base / 'sarga-0'
+    src_dir = base / dirname
     entries = []
-    for sf in sorted(s0_dir.glob('*.md')):
+    for sf in sorted(src_dir.glob('*.md')):
         sec_id, title, html, fallback_label = parse_fn(sf)
         has_title = title != sf.stem
         # Some front-matter files use a "##"/bold lead-in instead of a "#"
@@ -673,7 +676,7 @@ def build_front_matter(lang):
             'nav': has_title,
             'html': html,
         })
-    out = DATA_DIR / lang / 'sarga-0.json'
+    out = DATA_DIR / lang / f'{dirname}.json'
     out.write_text(json.dumps(entries, ensure_ascii=False, indent=1), encoding='utf-8')
     print(f"  wrote {out.relative_to(SITE_DIR)}  ({len(entries)} pages)")
 
@@ -760,6 +763,11 @@ def main():
     build_front_matter('te')
     print("Building English front matter…")
     build_front_matter('en')
+
+    print("Building Telugu back matter…")
+    build_front_matter('te', 'sarga-11')
+    print("Building English back matter…")
+    build_front_matter('en', 'sarga-11')
 
     for sarga in meta['sargas']:
         n = sarga['number']

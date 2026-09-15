@@ -752,8 +752,8 @@
       "start": 30,
       "end": 49
      },
-     "name_en": "Topic 4",
-     "pending_en": true
+     "name_en": "Commencement of Scribing Mahābhārata",
+     "pending_en": false
     },
     {
      "number": 5,
@@ -764,8 +764,8 @@
       "start": 50,
       "end": 62
      },
-     "name_en": "Topic 5",
-     "pending_en": true
+     "name_en": "Cryptic verses",
+     "pending_en": false
     },
     {
      "number": 6,
@@ -815,7 +815,7 @@
       "start": 1,
       "end": 3
      },
-     "name_en": "The Birth of Ganapati",
+     "name_en": "The Birthday of Ganapati",
      "pending_en": false
     },
     {
@@ -827,8 +827,8 @@
       "start": 4,
       "end": 13
      },
-     "name_en": "Topic 2",
-     "pending_en": true
+     "name_en": "A Gift by Devas",
+     "pending_en": false
     },
     {
      "number": 3,
@@ -863,7 +863,7 @@
       "start": 40,
       "end": 44
      },
-     "name_en": "Ganapati Pradakshina",
+     "name_en": "Ganapati performing Pradakshina",
      "pending_en": false
     },
     {

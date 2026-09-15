@@ -11,6 +11,7 @@
 
   var meta = null;
   var frontMatter = { te: null, en: null };
+  var backMatter = { te: null, en: null };
   var sargaCache = {};      // `${lang}-${n}` -> topics array
   var currentLang = 'te';
   var openGroups = new Set(['s1']);  // sidebar groups expanded by default
@@ -69,6 +70,9 @@
     if (parts[1] === 'front' && parts[2]) {
       return { lang: lang, kind: 'front', id: parts[2] };
     }
+    if (parts[1] === 'back' && parts[2]) {
+      return { lang: lang, kind: 'back', id: parts[2] };
+    }
     var sm = parts[1] && parts[1].match(/^s(\d+)$/);
     var tm = parts[2] && parts[2].match(/^t(\d+)$/);
     if (sm && tm) {
@@ -79,6 +83,7 @@
 
   function hashFor(lang, target) {
     if (target.kind === 'front') return '#/' + lang + '/front/' + target.id;
+    if (target.kind === 'back') return '#/' + lang + '/back/' + target.id;
     return '#/' + lang + '/s' + target.sarga + '/t' + String(target.topicNum).padStart(2, '0');
   }
 
@@ -128,6 +133,12 @@
       });
       html += navGroup(groupId, title, s.number, topicItems);
     });
+
+    // Back matter group (translator bio, family photos, back cover)
+    var beEntries = backMatter[currentLang] || [];
+    html += navGroup('back', currentLang === 'te' ? 'ఇతర విషయములు' : 'End Matter', '', beEntries.map(function (e) {
+      return { href: hashFor(currentLang, { kind: 'back', id: e.id }), label: frontEntryLabel(e) };
+    }));
 
     els.sidebarContent.innerHTML = html;
     els.sidebarContent.querySelectorAll('.nav-group-btn').forEach(function (btn) {
@@ -208,6 +219,9 @@
         });
       });
     });
+    (backMatter[lang] || []).forEach(function (e) {
+      out.push({ kind: 'back', id: e.id, label: frontEntryLabel(e) });
+    });
     return out;
   }
 
@@ -215,6 +229,7 @@
     for (var i = 0; i < list.length; i++) {
       var e = list[i];
       if (route.kind === 'front' && e.kind === 'front' && e.id === route.id) return i;
+      if (route.kind === 'back' && e.kind === 'back' && e.id === route.id) return i;
       if (route.kind === 'topic' && e.kind === 'topic' && e.sarga === route.sarga && e.topicNum === route.topicNum) return i;
     }
     return -1;
@@ -250,6 +265,10 @@
       parts.push(currentLang === 'te' ? 'ముందుమాట' : 'Front Matter');
       var entry = (frontMatter[currentLang] || []).find(function (e) { return e.id === route.id; });
       if (entry) parts.push(frontEntryLabel(entry));
+    } else if (route.kind === 'back') {
+      parts.push(currentLang === 'te' ? 'ఇతర విషయములు' : 'End Matter');
+      var backEntry = (backMatter[currentLang] || []).find(function (e) { return e.id === route.id; });
+      if (backEntry) parts.push(frontEntryLabel(backEntry));
     } else {
       var s = sargaMeta(route.sarga);
       parts.push((currentLang === 'te' ? 'సర్గ ' : 'Sarga ') + route.sarga + ' · ' + (currentLang === 'te' ? s.name_te : s.name_en));
@@ -275,6 +294,10 @@
       openGroups.add('front');
       applyOpenGroups();
       renderFront(route);
+    } else if (route.kind === 'back') {
+      openGroups.add('back');
+      applyOpenGroups();
+      renderBack(route);
     } else {
       openGroups.add('s' + route.sarga);
       applyOpenGroups();
@@ -285,6 +308,19 @@
   function renderFront(route) {
     els.content.innerHTML = '<p class="loading">Loading…</p>';
     var list = frontMatter[currentLang];
+    var entry = list && list.find(function (e) { return e.id === route.id; });
+    if (!entry) {
+      els.content.innerHTML = '<p class="error">Page not found.</p>';
+      return;
+    }
+    els.content.innerHTML = entry.html + renderPageNav(route);
+    renderBreadcrumb(route);
+    window.scrollTo(0, 0);
+  }
+
+  function renderBack(route) {
+    els.content.innerHTML = '<p class="loading">Loading…</p>';
+    var list = backMatter[currentLang];
     var entry = list && list.find(function (e) { return e.id === route.id; });
     if (!entry) {
       els.content.innerHTML = '<p class="error">Page not found.</p>';
@@ -334,7 +370,13 @@
       location.hash = DEFAULT_HASH.replace('/te/', '/' + lang + '/');
       return;
     }
-    var target = route.kind === 'front' ? { kind: 'front', id: route.id } : { kind: 'topic', sarga: route.sarga, topicNum: route.topicNum };
+    if (route.kind === 'back' && backMatter[lang] && !backMatter[lang].some(function (e) { return e.id === route.id; })) {
+      location.hash = DEFAULT_HASH.replace('/te/', '/' + lang + '/');
+      return;
+    }
+    var target = route.kind === 'front' ? { kind: 'front', id: route.id } :
+      route.kind === 'back' ? { kind: 'back', id: route.id } :
+      { kind: 'topic', sarga: route.sarga, topicNum: route.topicNum };
     var newHash = hashFor(lang, target);
     if (newHash === location.hash) render(); else location.hash = newHash;
   }
@@ -389,14 +431,18 @@
       getJSON('data/meta.json'),
       getJSON('data/te/sarga-0.json'),
       getJSON('data/en/sarga-0.json'),
+      getJSON('data/te/sarga-11.json'),
+      getJSON('data/en/sarga-11.json'),
     ]).then(function (results) {
       meta = results[0];
       frontMatter.te = results[1];
       frontMatter.en = results[2];
+      backMatter.te = results[3];
+      backMatter.en = results[4];
 
       var route = parseHash();
       if (route) {
-        openGroups.add(route.kind === 'front' ? 'front' : 's' + route.sarga);
+        openGroups.add(route.kind === 'front' ? 'front' : route.kind === 'back' ? 'back' : 's' + route.sarga);
       }
       window.addEventListener('hashchange', render);
 
