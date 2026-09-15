@@ -1,5 +1,11 @@
 [
  {
+  "id": "00_0_cover",
+  "title": "00 0 cover",
+  "nav": false,
+  "html": "<div class=\"s0-img\"><img src=\"images/cover_front_telugu.png\" alt=\"\" loading=\"lazy\"><p class=\"img-caption\"></p></div>"
+ },
+ {
   "id": "00_1_author",
   "title": "అనువక్త పరిచయము",
   "nav": false,
