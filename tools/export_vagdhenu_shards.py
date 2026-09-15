@@ -153,18 +153,25 @@ def load_topic_ranges():
 def existing_audio_verse_numbers(sarga_num):
     """Verse numbers (within this sarga) that already have a synced
     recording, checking both this site's audio/ and the content repo's
-    local scratch audio/ folder, matching gs_<n>_<v> or gs_<n>.<v>
-    (both separators exist in the wild) in either .wav or .mp3 (both
-    formats exist in the wild too — see build_data.py)."""
-    pat = re.compile(rf'^gs_{sarga_num}[._](\d+)\.(?:wav|mp3)$', re.IGNORECASE)
+    local scratch audio/ folder. Matches the current naming
+    (sarga-<n>-shloka-<v>.mp3) as well as the older gs_<n>_<v> /
+    gs_<n>.<v> forms (both separators exist in the wild) in either
+    .wav or .mp3 — see build_data.py's audio_filename_candidates,
+    which recognizes the same set."""
+    patterns = [
+        re.compile(rf'^sarga-{sarga_num}-shloka-(\d+)\.(?:wav|mp3)$', re.IGNORECASE),
+        re.compile(rf'^gs_{sarga_num}[._](\d+)\.(?:wav|mp3)$', re.IGNORECASE),
+    ]
     found = set()
     for d in (SITE_AUDIO_DIR, SCRATCH_AUDIO_DIR):
         if not d.is_dir():
             continue
         for f in d.glob('*'):
-            m = pat.match(f.name)
-            if m:
-                found.add(int(m.group(1)))
+            for pat in patterns:
+                m = pat.match(f.name)
+                if m:
+                    found.add(int(m.group(1)))
+                    break
     return found
 
 
@@ -233,15 +240,15 @@ def build_sarga_shard(n, topic_ranges):
                 skipped_have_audio.append(vnum)
                 continue
             entries.append({
-                "id": f"gs_{n}_{vnum}",
+                "id": f"sarga-{n}-shloka-{vnum}",
                 "meter": DEFAULT_METER,
                 "padas": padas,
                 "seed": DEFAULT_SEED,
                 "no_sandhi": True,
-                "out": f"out/gs_{n}_{vnum}.wav",
+                "out": f"out/sarga-{n}-shloka-{vnum}.mp3",
             })
 
-    entries.sort(key=lambda e: int(e["id"].rsplit('_', 1)[1]))
+    entries.sort(key=lambda e: int(e["id"].rsplit('-', 1)[1]))
     notes = []
     if skipped_have_audio:
         notes.append(f"{len(skipped_have_audio)} verse(s) already have audio, excluded: "

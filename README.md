@@ -11,18 +11,15 @@ pre-generated JSON. Content is generated from the markdown source in the
 sibling `../ganapati-sambavam` repo — this folder never edits that repo.
 
 **Verse recitation audio.** Each shloka can carry a play button (▶) that
-plays a pre-recorded recording, in either **`.wav` or `.mp3`** — both are
-synced and both play fine via the browser's `<audio>` element. These come
-from a Google Drive folder (`AUDIO_GDRIVE_FOLDER_ID` in
-`tools/build_data.py`), matched against `gs_<sarga>_<verse-number-within-sarga>`
-or `gs_<sarga>.<verse>` (e.g. `gs_1_1.wav` / `gs_1.1.mp3` — both mean Sarga
-1, verse 1) in either extension — four combinations checked per verse in
-total. Both separators are accepted because real sample recordings already
-dropped in `../ganapati-sambavam/audio/` use the dot form, while the naming
-was originally specified with an underscore — rather than guess which is
-authoritative, the build just matches whichever is actually present (same
-reasoning for accepting both audio formats — different verses have arrived
-in different formats). The recordings themselves are generated separately by
+plays a pre-recorded recording. These come from a Google Drive folder
+(`AUDIO_GDRIVE_FOLDER_ID` in `tools/build_data.py`), matched against the
+current naming `sarga-<sarga>-shloka-<verse-number-within-sarga>.mp3`
+(e.g. `sarga-1-shloka-1.mp3` means Sarga 1, verse 1). Files already
+synced under the older naming — `gs_<sarga>_<verse>` or
+`gs_<sarga>.<verse>`, in either `.wav` or `.mp3` — are still recognized
+too (see `audio_filename_candidates` in `tools/build_data.py`), so
+nothing already downloaded stops working after the naming change. The
+recordings themselves are generated separately by
 [Vāgdhenu](https://github.com/prathoshap/vagdhenu) (a Sanskrit chant
 text-to-speech model that needs a CUDA GPU — not something this build runs);
 this site only plays back whatever audio files already exist in that Drive
@@ -65,9 +62,10 @@ This reads `../ganapati-sambavam/markdown/{telugu,english}/…` and
 - `data/te/sarga-0.json`, `data/en/sarga-0.json` — front matter (foreword,
   poet bio, dedication, etc.)
 - `images/*`, `fonts/*` — copied from the source repo
-- `audio/gs_*.wav`, `audio/gs_*.mp3` — synced from Google Drive (see above),
-  incrementally: only files not already in `audio/` are downloaded, so
-  already-committed recordings aren't re-fetched on every rebuild
+- `audio/sarga-*-shloka-*.mp3` (plus any pre-existing `audio/gs_*.wav`,
+  `audio/gs_*.mp3`) — synced from Google Drive (see above), incrementally:
+  only files not already in `audio/` are downloaded, so already-committed
+  recordings aren't re-fetched on every rebuild
 
 It requires `pyyaml` (`pip install pyyaml` if you don't already have it from
 working in `../ganapati-sambavam/publishing`). Audio sync additionally needs

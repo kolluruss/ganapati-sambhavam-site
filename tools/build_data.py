@@ -15,10 +15,12 @@ Reads:
   ../ganapati-sambavam/publishing/fonts_cache/*.ttf
   ../ganapati-sambavam/markdown/fonts_cache/*.ttf
   Google Drive folder AUDIO_GDRIVE_FOLDER_ID (verse-recitation audio,
-  gs_<sarga>_<verse>.wav or gs_<sarga>_<verse>.mp3 — both formats are
-  synced and playable) — requires GOOGLE_API_KEY in the environment;
-  silently skipped without it, so a local run without the key still
-  works, just with no play buttons.
+  sarga-<sarga>-shloka-<verse>.mp3 — the current Vagdhenu naming; the
+  older gs_<sarga>_<verse>.wav/.mp3 and gs_<sarga>.<verse>.wav/.mp3
+  forms are still recognized for files already synced under the old
+  name) — requires GOOGLE_API_KEY in the environment; silently
+  skipped without it, so a local run without the key still works,
+  just with no play buttons.
 
 Writes (into this site folder):
   data/meta.json            — book + sarga + topic metadata (both languages)
@@ -28,7 +30,8 @@ Writes (into this site folder):
   data/en/sarga-N.json      — English sarga N topics (N = 1..10)
   images/*.png, *.jpeg      — copied illustrations
   fonts/*.ttf               — copied fonts
-  audio/gs_*.wav, gs_*.mp3  — synced verse-recitation audio (if available)
+  audio/sarga-*-shloka-*.mp3, gs_*.wav, gs_*.mp3
+                            — synced verse-recitation audio (if available)
 
 Re-run any time the source markdown changes; this script does not
 modify anything in ../ganapati-sambavam.
@@ -55,13 +58,26 @@ AUDIO_DEST = SITE_DIR / "audio"
 
 # Verse-recitation audio (Vagdhenu-generated), shared by both languages
 # since it's a Sanskrit chant — independent of the Telugu/English gloss.
-# Files are named gs_<sarga>_<verse-number-within-sarga>, as either .wav
-# or .mp3 (both are synced and both play fine via the browser's <audio>
-# element); the Drive folder must be shared "Anyone with the link:
-# Viewer", same as the images folder
-# ganapati-sambavam/publishing/make_pdf_book.py reads.
-AUDIO_GDRIVE_FOLDER_ID = "1fSkt3tUU7Pb6g3kmGl6gN2cxbAqm0bP5"
+# Current naming is sarga-<sarga>-shloka-<verse-number-within-sarga>.mp3;
+# older files synced before the naming change are gs_<sarga>_<verse> or
+# gs_<sarga>.<verse>, in either .wav or .mp3 (both play fine via the
+# browser's <audio> element) — see AUDIO_FILENAME_CANDIDATES, which
+# checks all of these so already-synced old-named files keep working.
+# The Drive folder must be shared "Anyone with the link: Viewer", same
+# as the images folder ganapati-sambavam/publishing/make_pdf_book.py reads.
+AUDIO_GDRIVE_FOLDER_ID = "1FUr1n-9eb9cJDBxowWf1o3UUt8B5PrWb"
 AUDIO_EXTENSIONS = (".wav", ".mp3")
+
+
+def audio_filename_candidates(sarga_num, vnum):
+    """Every filename (current + legacy naming, both extensions) that
+    would represent this verse's recitation audio, current naming
+    first."""
+    for ext in AUDIO_EXTENSIONS:
+        yield f'sarga-{sarga_num}-shloka-{vnum}{ext}'
+    for sep in ('_', '.'):
+        for ext in AUDIO_EXTENSIONS:
+            yield f'gs_{sarga_num}{sep}{vnum}{ext}'
 
 # English theme summaries — one-sentence "what happens in this sarga"
 # blurbs (mirrors publishing/make_pdf_book_english.py). Distinct from
@@ -144,25 +160,17 @@ def verse_block_html(sarga_num, raw_lines, inner_html, available_audio):
     a play button + data-audio attribute when: this is a numbered main-sarga
     verse (sarga_num given, i.e. not front matter), a verse number could be
     extracted, and a matching audio file actually exists — so a verse with
-    no recorded audio yet renders with no button at all. Matches
-    gs_<sarga>_<verse> (underscore, as specified) or gs_<sarga>.<verse>
-    (dot — seen in real sample files already dropped in
-    ganapati-sambavam/audio/), in either .wav or .mp3 — both play fine via
-    the browser's <audio> element, and different verses have arrived in
-    different formats, so all four combinations are checked."""
+    no recorded audio yet renders with no button at all. Checks every
+    current + legacy filename shape (see audio_filename_candidates)."""
     attr, button = '', ''
     if sarga_num is not None:
         vnum = extract_verse_number(raw_lines)
         if vnum is not None:
-            for sep in ('_', '.'):
-                for ext in AUDIO_EXTENSIONS:
-                    fname = f'gs_{sarga_num}{sep}{vnum}{ext}'
-                    if fname in available_audio:
-                        attr = f' data-audio="audio/{fname}"'
-                        button = ('<button type="button" class="play-btn" '
-                                   'aria-label="Play recitation">▶</button>')
-                        break
-                if attr:
+            for fname in audio_filename_candidates(sarga_num, vnum):
+                if fname in available_audio:
+                    attr = f' data-audio="audio/{fname}"'
+                    button = ('<button type="button" class="play-btn" '
+                               'aria-label="Play recitation">▶</button>')
                     break
     return f'<div class="verse-block"{attr}>{button}{inner_html}</div>'
 
