@@ -241,6 +241,14 @@ def te_norm_marker(s):
     return s[:-3] + '**' if s.endswith(':**') else s
 
 
+# A shloka pada is usually plain '**...**', but some lines carry their
+# closing verse-number marker (danda + digits) *outside* the closing '**'
+# instead of inside it (e.g. '**...bhārata !**|' or '**...**  || 80 ||') —
+# tolerate that trailing punctuation when deciding whether a line starts a
+# bold run, or the whole run (and its shloka) goes undetected.
+TE_BOLD_LINE_RE = re.compile(r'^\*\*.+\*\*[\s|॥0-9౦-౯०-९]*$')
+
+
 def te_mark_verse_lines(lines):
     """Index of lines belonging to a shloka block: a contiguous run of
     fully-bold lines immediately followed (after blank lines) by a
@@ -250,7 +258,7 @@ def te_mark_verse_lines(lines):
     i = 0
     while i < n:
         s = lines[i].strip()
-        if s.startswith('**') and s.endswith('**') and len(s) > 4:
+        if len(s) > 4 and TE_BOLD_LINE_RE.match(s):
             j = i
             block = []
             while j < n and lines[j].strip() != '':

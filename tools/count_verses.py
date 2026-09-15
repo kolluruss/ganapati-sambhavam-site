@@ -50,6 +50,12 @@ def te_norm_marker(s):
     return s[:-3] + '**' if s.endswith(':**') else s
 
 
+# Matches build_data.py's TE_BOLD_LINE_RE exactly — a shloka pada's
+# closing verse-number marker sometimes sits outside the closing '**'
+# (danda + digits, e.g. '**...**|| 80 ||') instead of inside it.
+TE_BOLD_LINE_RE = re.compile(r'^\*\*.+\*\*[\s|॥0-9౦-౯०-९]*$')
+
+
 def count_telugu_verses(path):
     text = path.read_text(encoding='utf-8')
     text = text.replace('** **', '**\n**')
@@ -60,7 +66,7 @@ def count_telugu_verses(path):
     i = 0
     while i < n:
         s = lines[i].strip()
-        if s.startswith('**') and s.endswith('**') and len(s) > 4:
+        if len(s) > 4 and TE_BOLD_LINE_RE.match(s):
             j = i
             while j < n and lines[j].strip() != '':
                 j += 1
