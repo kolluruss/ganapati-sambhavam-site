@@ -106,7 +106,7 @@ DEVANAGARI_RE = re.compile(r'[ऄ-हऽ-ॡ०-९]')
 # thing build_data.py's own BR_RE handles for the reading site. Without
 # this, those padas end up as one string with literal "<br/>" text stuck
 # in the middle instead of being split out.
-BR_RE = re.compile(r'<br\s*/?>\n?', re.IGNORECASE)
+BR_RE = re.compile(r'<br\s*/?>[ \t]*\n?', re.IGNORECASE)
 DOUBLE_DANDA_RE = re.compile(r'\|\|')
 SINGLE_DANDA_RE = re.compile(r'\|')
 # Cosmetic only (see NUMBERING above): strip any trailing run of danda-like

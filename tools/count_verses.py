@@ -38,8 +38,16 @@ TE_BASE = SRC_REPO / "markdown" / "telugu"
 EN_BASE = SRC_REPO / "markdown" / "english"
 OUT_DIR = SITE_DIR / "verse_counts"
 
-BR_RE = re.compile(r'<br\s*/?>\n?', re.IGNORECASE)
+BR_RE = re.compile(r'<br\s*/?>[ \t]*\n?', re.IGNORECASE)
 DEVANAGARI_RE = re.compile(r'[ऄ-हऽ-ॡ०-९]')
+
+
+def te_norm_marker(s):
+    """Tolerate an inner colon before the closing '**' (some source files
+    write '**పదచ్ఛేదము:**' instead of the corpus-standard
+    '**పదచ్ఛేదము**') — matches build_data.py's te_norm_marker exactly, so
+    this count agrees with what the site actually renders."""
+    return s[:-3] + '**' if s.endswith(':**') else s
 
 
 def count_telugu_verses(path):
@@ -59,7 +67,7 @@ def count_telugu_verses(path):
             k = j
             while k < n and lines[k].strip() == '':
                 k += 1
-            if k < n and lines[k].strip() == '**పదచ్ఛేదము**':
+            if k < n and te_norm_marker(lines[k].strip()) == '**పదచ్ఛేదము**':
                 count += 1
                 i = j
                 continue

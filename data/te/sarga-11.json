@@ -13,8 +13,8 @@
  },
  {
   "id": "10_back_page",
-  "title": "Backpage",
+  "title": "ఆఖరిపుట",
   "nav": true,
-  "html": "<h1 id=\"10_back_page\" class=\"s0-title\">Backpage</h1><div class=\"s0-img\"><img src=\"images/cover_back_telugu.png\" alt=\"\" loading=\"lazy\"><p class=\"img-caption\"></p></div>"
+  "html": "<h1 id=\"10_back_page\" class=\"s0-title\">ఆఖరిపుట</h1><div class=\"s0-img\"><img src=\"images/cover_back_telugu.png\" alt=\"\" loading=\"lazy\"><p class=\"img-caption\"></p></div>"
  }
 ]

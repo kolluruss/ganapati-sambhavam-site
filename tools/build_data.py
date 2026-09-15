@@ -83,7 +83,7 @@ SARGA_THEMES_EN = {
 }
 
 DEVANAGARI_RE = re.compile(r'[ऄ-हऽ-ॡ०-९]')
-BR_RE = re.compile(r'<br\s*/?>\n?', re.IGNORECASE)
+BR_RE = re.compile(r'<br\s*/?>[ \t]*\n?', re.IGNORECASE)
 
 
 # ── Shared inline helpers ──────────────────────────────────────────
@@ -234,6 +234,13 @@ TE_SECTION_MAP = {
 }
 
 
+def te_norm_marker(s):
+    """Tolerate an inner colon before the closing '**' on these section
+    markers (some source files write '**పదచ్ఛేదము:**' instead of the
+    corpus-standard '**పదచ్ఛేదము**') so both forms match the same key."""
+    return s[:-3] + '**' if s.endswith(':**') else s
+
+
 def te_mark_verse_lines(lines):
     """Index of lines belonging to a shloka block: a contiguous run of
     fully-bold lines immediately followed (after blank lines) by a
@@ -252,7 +259,7 @@ def te_mark_verse_lines(lines):
             k = j
             while k < n and lines[k].strip() == '':
                 k += 1
-            if k < n and lines[k].strip() == '**పదచ్ఛేదము**':
+            if k < n and te_norm_marker(lines[k].strip()) == '**పదచ్ఛేదము**':
                 verse_idx.update(block)
                 i = j
                 continue
@@ -342,9 +349,9 @@ def te_parse_sarga0_file(path):
                     buf.append(f'<div class="s0-img"><img src="{ref}" alt="{esc(m.group(1))}" loading="lazy">'
                                f'<p class="img-caption">{esc(m.group(1))}</p></div>')
             continue
-        if s in TE_SECTION_MAP:
+        if te_norm_marker(s) in TE_SECTION_MAP:
             close_vb()
-            _, label = TE_SECTION_MAP[s]
+            _, label = TE_SECTION_MAP[te_norm_marker(s)]
             skipping, state = False, 'section'
             buf.append(f'<div class="sec-hdr">{esc(label)}</div>')
             continue
@@ -423,9 +430,9 @@ def te_parse_topic(path, sarga_dir, topic_id, sarga_num, available_audio):
                     buf.append(f'<div class="img-pg"><img src="{ref}" alt="{esc(m.group(1))}" loading="lazy">'
                                f'<p class="img-caption">{esc(m.group(1))}</p></div>')
             continue
-        if s in TE_SECTION_MAP:
+        if te_norm_marker(s) in TE_SECTION_MAP:
             close_vb()
-            _, label = TE_SECTION_MAP[s]
+            _, label = TE_SECTION_MAP[te_norm_marker(s)]
             skipping, state = False, label
             buf.append(f'<div class="sec-hdr">{esc(label)}</div>')
             continue
