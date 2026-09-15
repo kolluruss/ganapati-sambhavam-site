@@ -36,6 +36,14 @@ CAVEATS
   block count doesn't match its YAML shloka_range, is skipped
   entirely (printed as a warning) — its verses are simply absent
   from that sarga's output rather than guessed at.
+- sarga-7/topic_07.md is special-cased (build_sarga7_topic07_verses):
+  its embedded Bhagavad Gita quotation collapses 4 verses (80-83)
+  into a single "### Shloka:" heading, so the normal 1-heading-per-
+  verse assumption doesn't hold. That block is split back into its 4
+  verses using their own embedded "<danda> N <danda>" markers (see
+  split_multi_verse_block). If this file's structure changes and the
+  special case stops matching, it bails and the topic is skipped
+  with a warning like any other mismatch, rather than mislabeling.
 - Each verse's padas are joined with "\n" in a single "devanagari"
   string, danda marks normalized to proper Devanagari ("।"/"॥"; the
   source mixes in ASCII pipes) and any trailing verse-number/citation
@@ -97,11 +105,14 @@ def load_topic_ranges():
     return ranges
 
 
-def extract_shloka_blocks(path):
+def extract_shloka_blocks(path, clean_last_line=True):
     """Parse one English topic .md file's '### Shloka:' blocks, in
     order. Returns a list of pada-line lists (Devanagari only, danda
-    normalized, trailing citation debris cleaned) — no verse numbers;
-    the caller assigns those positionally."""
+    normalized) — no verse numbers; the caller assigns those
+    positionally. By default the last line of each block has its
+    trailing citation debris cleaned to a plain closing danda; pass
+    clean_last_line=False to keep it (needed when a block actually
+    holds more than one embedded verse — see split_multi_verse_block)."""
     text = BR_RE.sub('\n', path.read_text(encoding='utf-8'))
     lines = text.split('\n')
     blocks = []
@@ -112,7 +123,8 @@ def extract_shloka_blocks(path):
         if not deva_lines:
             return
         cleaned = list(deva_lines)
-        cleaned[-1] = clean_trailing_citation(cleaned[-1])
+        if clean_last_line:
+            cleaned[-1] = clean_trailing_citation(cleaned[-1])
         blocks.append(cleaned)
 
     for raw in lines:
@@ -133,6 +145,57 @@ def extract_shloka_blocks(path):
     return blocks
 
 
+# Matches a verse-end marker that still carries its citation digits (as
+# opposed to a bare mid-verse danda) — used to split a '### Shloka:'
+# block that actually holds more than one embedded verse.
+VERSE_MARKER_WITH_DIGITS_RE = re.compile(r'[।॥]+\s*[0-9०-९]+\s*[।॥]*')
+
+
+def split_multi_verse_block(padas):
+    """Split a block whose padas actually span multiple verses, each
+    ending in its own '<danda> N <danda>' marker, into separate
+    per-verse pada-lists. Used only for sarga-7/topic_07's embedded
+    Gita quotation, which collapses 4 verses into a single
+    '### Shloka:' heading in the English markdown."""
+    groups, current = [], []
+    for line in padas:
+        current.append(line)
+        if VERSE_MARKER_WITH_DIGITS_RE.search(line):
+            groups.append(current)
+            current = []
+    if current:
+        groups.append(current)
+    return groups
+
+
+def build_sarga7_topic07_verses():
+    """Special case: sarga-7/topic_07.md's 12 '### Shloka:' blocks map
+    to 15 verses (79-93), not 1:1 — block 2 is a 4-pada-group Gita
+    quotation that collapses verses 80-83 into a single heading.
+    Bails (returns None) if the file's structure changes so this
+    stops matching, rather than silently mislabeling verses."""
+    tf = EN_BASE / 'sarga-7' / 'topic_07.md'
+    blocks = extract_shloka_blocks(tf, clean_last_line=False)
+    if len(blocks) != 12:
+        return None
+
+    entries = [{"number": 79, "devanagari": "\n".join(
+        blocks[0][:-1] + [clean_trailing_citation(blocks[0][-1])])}]
+
+    gita_subverses = split_multi_verse_block(blocks[1])
+    if len(gita_subverses) != 4:
+        return None
+    for i, sub in enumerate(gita_subverses):
+        sub = sub[:-1] + [clean_trailing_citation(sub[-1])]
+        entries.append({"number": 80 + i, "devanagari": "\n".join(sub)})
+
+    for i, block in enumerate(blocks[2:12]):
+        entries.append({"number": 84 + i, "devanagari": "\n".join(
+            block[:-1] + [clean_trailing_citation(block[-1])])})
+
+    return entries
+
+
 def build_sarga_shlokas(n, topic_ranges):
     sarga_dir = EN_BASE / f'sarga-{n}'
     if not sarga_dir.is_dir():
@@ -149,6 +212,16 @@ def build_sarga_shlokas(n, topic_ranges):
         if not tf.exists():
             skipped_topics.append((tf.name, f"no English translation yet (shlokas {start}-{end})"))
             continue
+
+        if (n, topic_num) == (7, 7):
+            special = build_sarga7_topic07_verses()
+            if special is None:
+                skipped_topics.append((tf.name, "special-case sarga-7/topic_07 splitter no longer "
+                                                  "matches this file's structure — needs review"))
+                continue
+            entries.extend(special)
+            continue
+
         blocks = extract_shloka_blocks(tf)
         if len(blocks) != expected:
             skipped_topics.append((tf.name, f"{len(blocks)} '### Shloka:' block(s) found, "
