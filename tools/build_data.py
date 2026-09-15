@@ -82,7 +82,7 @@ SARGA_THEMES_EN = {
     10: "The poet's autobiography and his other works.",
 }
 
-DEVANAGARI_RE = re.compile(r'[ऀ-ॿ]')
+DEVANAGARI_RE = re.compile(r'[ऄ-हऽ-ॡ०-९]')
 BR_RE = re.compile(r'<br\s*/?>\n?', re.IGNORECASE)
 
 

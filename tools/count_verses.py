@@ -39,7 +39,7 @@ EN_BASE = SRC_REPO / "markdown" / "english"
 OUT_DIR = SITE_DIR / "verse_counts"
 
 BR_RE = re.compile(r'<br\s*/?>\n?', re.IGNORECASE)
-DEVANAGARI_RE = re.compile(r'[ऀ-ॿ]')
+DEVANAGARI_RE = re.compile(r'[ऄ-हऽ-ॡ०-९]')
 
 
 def count_telugu_verses(path):

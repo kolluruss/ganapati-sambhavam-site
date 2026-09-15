@@ -100,7 +100,7 @@ SITE_AUDIO_DIR = SITE_DIR / "audio"
 SCRATCH_AUDIO_DIR = SRC_REPO / "audio"   # local Drive-download staging spot
 OUT_DIR = SITE_DIR / "vagdhenu_shards"
 
-DEVANAGARI_RE = re.compile(r'[ऀ-ॿ]')
+DEVANAGARI_RE = re.compile(r'[ऄ-हऽ-ॡ०-९]')
 # Some files (e.g. sarga-6/topic_01.md) put multiple padas on one physical
 # markdown line, joined by inline "<br/>" rather than real newlines — same
 # thing build_data.py's own BR_RE handles for the reading site. Without
