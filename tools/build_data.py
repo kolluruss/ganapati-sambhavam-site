@@ -222,16 +222,38 @@ def sync_audio_from_gdrive(force=False):
     audio_files = [f for f in files if f["name"].lower().endswith(AUDIO_EXTENSIONS)]
     to_fetch = [f for f in audio_files if force or not (AUDIO_DEST / f["name"]).exists()]
     print(f"  Found {len(audio_files)} audio file(s) in Drive, {len(to_fetch)} new", flush=True)
+    import time
+    from googleapiclient.errors import HttpError
+    downloaded, failed = 0, []
     for f in to_fetch:
         dest = AUDIO_DEST / f["name"]
         req = service.files().get_media(fileId=f["id"])
-        buf = io.FileIO(dest, mode="wb")
-        dl = MediaIoBaseDownload(buf, req)
-        done = False
-        while not done:
-            _, done = dl.next_chunk()
-        print(f"    {f['name']}", flush=True)
-    print(f"  Downloaded {len(to_fetch)} new audio file(s).")
+        for attempt in range(1, 5):
+            try:
+                buf = io.FileIO(dest, mode="wb")
+                dl = MediaIoBaseDownload(buf, req)
+                done = False
+                while not done:
+                    _, done = dl.next_chunk()
+                buf.close()
+                print(f"    {f['name']}", flush=True)
+                downloaded += 1
+                break
+            except HttpError as e:
+                buf.close()
+                if dest.exists():
+                    dest.unlink()  # never leave a 0-byte/partial file behind
+                if e.resp.status not in (403, 429) or attempt == 4:
+                    print(f"    {f['name']}: giving up after {attempt} attempt(s) ({e.resp.status})", flush=True)
+                    failed.append(f["name"])
+                    break
+                wait = 15 * attempt
+                print(f"    {f['name']}: HTTP {e.resp.status}, retrying in {wait}s "
+                      f"(attempt {attempt}/4)…", flush=True)
+                time.sleep(wait)
+        time.sleep(0.3)  # spread requests out — Drive's anti-abuse throttle triggers on bursts
+    print(f"  Downloaded {downloaded} new audio file(s)"
+          f"{f', {len(failed)} failed after retries (will retry next run)' if failed else ''}.")
 
 
 # ══════════════════════════════════════════════════════════════════
