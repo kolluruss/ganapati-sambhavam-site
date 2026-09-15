@@ -1,9 +1,9 @@
 [
  {
   "id": "00_0_cover",
-  "title": "00 0 cover",
-  "nav": false,
-  "html": "<div class=\"s0-img\"><img src=\"images/cover_front_telugu.png\" alt=\"\" loading=\"lazy\"><p class=\"img-caption\"></p></div>"
+  "title": "పుస్తకముఖచిత్రము",
+  "nav": true,
+  "html": "<h1 id=\"00_0_cover\" class=\"s0-title\">పుస్తకముఖచిత్రము</h1><div class=\"s0-img\"><img src=\"images/cover_front_telugu.png\" alt=\"\" loading=\"lazy\"><p class=\"img-caption\"></p></div>"
  },
  {
   "id": "01_mumdumata",
