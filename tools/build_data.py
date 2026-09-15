@@ -260,6 +260,39 @@ def te_mark_verse_lines(lines):
     return verse_idx
 
 
+def _te_s0_verse_line_idx(lines):
+    """A bold line in sarga-0 free-form text is a shloka pada, not a bold
+    label, if a danda ('|' or '||') appears anywhere in its (blank-line-
+    tolerant) run of consecutive bold lines. The convention here only
+    marks the end of each couplet with a danda, not every pada line, so
+    checking each line for its own '|' misclassifies every other pada as
+    a plain bold paragraph and splits the shloka's verse-block in two."""
+    n = len(lines)
+    verse_idx = set()
+    i = 0
+    while i < n:
+        s = lines[i].strip()
+        if s.startswith('**') and s.endswith('**') and len(s) > 4:
+            group = [i]
+            j = i + 1
+            while j < n:
+                sj = lines[j].strip()
+                if not sj:
+                    j += 1
+                    continue
+                if sj.startswith('**') and sj.endswith('**') and len(sj) > 4:
+                    group.append(j)
+                    j += 1
+                    continue
+                break
+            if any('|' in lines[k].strip()[2:-2] for k in group):
+                verse_idx.update(group)
+            i = j
+        else:
+            i += 1
+    return verse_idx
+
+
 def te_parse_sarga0_file(path):
     """Returns (sec_id, title, html) for one Telugu sarga-0 markdown file."""
     sarga0_dir = path.parent
@@ -267,6 +300,7 @@ def te_parse_sarga0_file(path):
     text = text.replace('** **', '**\n**')
     text = BR_RE.sub('\n', text)
     lines = text.split('\n')
+    verse_line_idx = _te_s0_verse_line_idx(lines)
     buf, sec_id, title = [], path.stem, path.stem
     fallback_label = None
     state, in_vb, skipping, img_count = 'body', False, False, 0
@@ -277,7 +311,7 @@ def te_parse_sarga0_file(path):
             buf.append('</div>')
             in_vb = False
 
-    for line in lines:
+    for idx, line in enumerate(lines):
         s = line.strip()
         if not s:
             continue
@@ -322,7 +356,7 @@ def te_parse_sarga0_file(path):
             close_vb(); buf.append(f'<div class="s0-bullet">{inline_te(s[2:])}</div>'); continue
         if s.startswith('**') and s.endswith('**') and len(s) > 4:
             inner_txt = s[2:-2]
-            if '|' in inner_txt:
+            if idx in verse_line_idx:
                 if not in_vb:
                     buf.append('<div class="verse-block">'); in_vb = True
                 buf.append(f'<div class="verse">{inline_te(s)}</div>')
