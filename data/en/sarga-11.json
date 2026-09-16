@@ -1,0 +1,20 @@
+[
+ {
+  "id": "00_1_author",
+  "title": "About the translator",
+  "nav": false,
+  "html": "<h2 class=\"s0-h2\">About the translator</h2><div class=\"s0-verse-block\"><div class=\"s0-verse-iast\">Kolluru Seetarama Sarma, Smt. Saroja, Chi. Shreyas Sarma</div></div><div class=\"s0-img\"><img src=\"images/family_seetarama.png\" alt=\"\" loading=\"lazy\"><p class=\"img-caption\"></p></div><p class=\"s0-body\"><strong>Seetarama Sarma</strong> is a seasoned technology professional with decades of experience in leadership roles, including Principal Engineer at AWS and Director of Cloud Engineering at U.S. Bank. A graduate of the Indian Institute of Technology (IIT) Madras, where he earned his Bachelor’s degree in Civil Engineering in 1995, he combines technical expertise with a deep-rooted passion for classical learning.</p><p class=\"s0-body\">He holds a Master’s degree in Samskṛtam from the <strong>Hindu University of America</strong> and comes from a distinguished lineage of Sanskrit scholars. Under the guidance of his father, <strong>Sri Kolluru Avatara Sarma</strong>—an esteemed teacher of over four decades and author of more than sixty works—he has cultivated a lifelong dedication to the study and preservation of Sanskrit.</p>"
+ },
+ {
+  "id": "00_2_family_pics",
+  "title": "The Translator's Family",
+  "nav": false,
+  "html": "<h3 class=\"s0-h3\">The Translator&#x27;s Family</h3><div class=\"family-cell\"><div class=\"s0-verse-block\"><div class=\"s0-verse-iast\">Parents: Sri Paduka Sri Avatara Sarma, Smt. Venkataramanamma</div></div><div class=\"s0-img\"><img src=\"images/family_parents.png\" alt=\"\" loading=\"lazy\"><p class=\"img-caption\"></p></div></div><div class=\"family-cell\"><div class=\"s0-verse-block\"><div class=\"s0-verse-iast\">Grandparents:Sri Kolluru Lakshmana Murthy Sarma, Smt. Lakshmi Sodamma</div></div><div class=\"s0-img\"><img src=\"images/family_grand_parents.png\" alt=\"\" loading=\"lazy\"><p class=\"img-caption\"></p></div></div><div class=\"family-cell\"><div class=\"s0-verse-block\"><div class=\"s0-verse-iast\">In-laws: Sri Singitam Narsinga Rao and Smt. Nirmala</div></div><div class=\"s0-img\"><img src=\"images/family_in_laws.jpeg\" alt=\"\" loading=\"lazy\"><p class=\"img-caption\"></p></div></div>"
+ },
+ {
+  "id": "10_back_page",
+  "title": "Backpage",
+  "nav": true,
+  "html": "<h1 id=\"10_back_page\" class=\"s0-title\">Backpage</h1><div class=\"s0-img\"><img src=\"images/cover_back_english.png\" alt=\"\" loading=\"lazy\"><p class=\"img-caption\"></p></div>"
+ }
+]
